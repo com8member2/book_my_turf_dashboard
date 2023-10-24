@@ -1,7 +1,7 @@
 
 
 import 'package:book_my_turf_dashboard/features/auth/login_screen.dart';
-import 'package:book_my_turf_dashboard/features/dasboard.dart';
+import 'package:book_my_turf_dashboard/features/dashboard/presentation/dasboard.dart';
 import 'package:flutter/cupertino.dart';
 
 
