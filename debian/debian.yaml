@@ -1,0 +1,17 @@
+flutter_app:
+  command: book_my_turf_dashboard
+  arch: x64
+  parent: /usr/local/lib/book_my_turf_dashboard/lib
+  nonInteractive: false
+
+control:
+  Package: book-my-turf-dashboard
+  Version: 18.0.0
+  Architecture: amd64
+  Priority: optional
+  Depends:
+  Maintainer: admin
+  Description: BookMyTurf App that does everything!
+
+options:
+    exec_out_dir: debian/packages
