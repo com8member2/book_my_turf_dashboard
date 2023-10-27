@@ -6,7 +6,7 @@ flutter_app:
 
 control:
   Package: book-my-turf-dashboard
-  Version: 18.0.0
+  Version: 21.0.0
   Architecture: amd64
   Priority: optional
   Depends:

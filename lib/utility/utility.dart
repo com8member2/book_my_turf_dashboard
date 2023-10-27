@@ -5,7 +5,6 @@ import 'package:elegant_notification/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 import '../consatant/Constants.dart';
@@ -33,10 +32,10 @@ Future<SharedPreferences> getSharedPreference() async {
   return pref ??= await SharedPreferences.getInstance();
 }
 
-SupabaseClient getAdminSupabase(){
-  final supabase = SupabaseClient(Constants.supabaseUrl, Constants.remoteConfig.getValue('service_role').asString());
-  return supabase;
-}
+// SupabaseClient getAdminSupabase(){
+//   final supabase = SupabaseClient(Constants.supabaseUrl, Constants.remoteConfig.getValue('service_role').asString());
+//   return supabase;
+// }
 
 Future<void> changeTheme(bool themeValue, BuildContext context) async {
   isDarktheme.value = themeValue;
@@ -45,7 +44,7 @@ Future<void> changeTheme(bool themeValue, BuildContext context) async {
 
   },);
 }
-Image titleImage() => Image.asset(isDarktheme.value ? 'assets/images/Logo_Lifesten-WhiteOrange (1).png' : 'assets/images/Logo_Lifesten-BlackOrange (2).png',height: 80,);
+Image titleImage() => Image.asset(isDarktheme.value ? 'assets/images/ground.png' : 'assets/images/ground.png',height: 80,);
 
 InputDecoration textFieldDecorationForProfile(String hint, BuildContext context, {bool isColorBorder = false}) {
   final outlineInputBorder = isColorBorder

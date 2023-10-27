@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:book_my_turf_dashboard/consatant/Constants.dart';
 import 'package:book_my_turf_dashboard/routing/app_routes.dart';
 import 'package:book_my_turf_dashboard/shared/widget/custom_image_view.dart';
-import 'package:country_picker/country_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../consatant/ColorConstant.dart';
 import '../../../shared/widget/common_bottom_align.dart';
@@ -20,7 +20,6 @@ import '../../../utility/utility.dart';
 
 
 class LoginScreen extends HookConsumerWidget {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context,ref) {
@@ -73,16 +72,22 @@ class LoginScreen extends HookConsumerWidget {
                               padding: const EdgeInsets.symmetric(vertical: 20),
                               child: CustomButton('Continue', () async {
 
-                            await Constants.supabase.auth.signInWithPassword(password: passwordController.text, email: emailController.text).then(
-                              (value) {
+                            try {
+                              await Constants.supabase.auth.signInWithPassword(password: passwordController.text, email: emailController.text).then(
+                                (value) {
 
-                                var res = value.user;
-                                if(res !=null){
-                                  Navigator.pushNamedAndRemoveUntil(context, AppRoutes.dashboard, (route) => true);
-                                }
-                                print("after login ${value.user}");
-                              },
-                            );
+                                  var res = value.user;
+                                  if(res !=null){
+
+                                    //Navigator.pushNamed(context, AppRoute.dashboard);
+                                    //context.goNamed(AppRoute.home);
+                                  }
+                                },
+                              );
+                            }  catch (e) {
+                              print(e.toString());
+                              EasyLoading.showError(e.toString());
+                            }
                           }),
                         )
                           ],
