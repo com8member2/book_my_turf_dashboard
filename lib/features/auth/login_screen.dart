@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:book_my_turf_dashboard/consatant/Constants.dart';
+import 'package:book_my_turf_dashboard/features/root_screen.dart';
 import 'package:book_my_turf_dashboard/routing/app_routes.dart';
 import 'package:book_my_turf_dashboard/shared/widget/custom_image_view.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -8,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../consatant/ColorConstant.dart';
@@ -78,9 +78,11 @@ class LoginScreen extends HookConsumerWidget {
 
                                   var res = value.user;
                                   if(res !=null){
-
-                                    //Navigator.pushNamed(context, AppRoute.dashboard);
-                                    //context.goNamed(AppRoute.home);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => RootScreen()));
+                                    //Navigator.pushNamed(context, AppRoute.rootScreen);
                                   }
                                 },
                               );

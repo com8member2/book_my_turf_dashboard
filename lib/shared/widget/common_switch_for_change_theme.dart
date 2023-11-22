@@ -19,16 +19,17 @@ class CommonSwitchForChangeTheme extends HookConsumerWidget {
           child: ListTile(
               onTap: () {
                 isDarktheme.value = !isDarkThemeVal;
+                changeTheme(isDarktheme.value, context);
               },
-              horizontalTitleGap: 0,
-              contentPadding: EdgeInsets.only(top: 3, bottom: 3, left: 15, right: 15),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-              leading: Icon(Icons.dark_mode),
-              trailing:Switch(
-              onChanged: (value) => changeTheme(value, context),
-        value: isDarkThemeVal,
-        activeColor: CustomColor.primaryGreen,
-        ),),
+              leading: Icon(Icons.light_mode),
+            title: Text("Theme"),
+        //       trailing:Switch(
+        //       onChanged: (value) => changeTheme(value, context),
+        // value: isDarkThemeVal,
+        // activeColor: CustomColor.primaryGreen,
+        // ),
+          ),
         );
       },
     );

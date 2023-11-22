@@ -41,7 +41,6 @@ Future<void> changeTheme(bool themeValue, BuildContext context) async {
   isDarktheme.value = themeValue;
   await getSharedPreference().then((value) {
     value.setBool(PrefKeys.isDarkTheme, themeValue);
-
   },);
 }
 Image titleImage() => Image.asset(isDarktheme.value ? 'assets/images/ground.png' : 'assets/images/ground.png',height: 80,);
@@ -155,4 +154,39 @@ String extractcountryCode(String input, {bool? isCountry = false}) {
     return input.substring(spaceIndex + 1);
   }
   return "";
+}
+InputDecoration dropDownDecoration(String hint,BuildContext context,{bool isColorBorder = false}) {
+  const outlineInputBorder = OutlineInputBorder(
+      borderSide: BorderSide(color: CustomColor.txtMediumGray,width: 0.5), borderRadius: BorderRadius.all(Radius.circular(5)));
+  return InputDecoration(
+
+    contentPadding: const EdgeInsets.only(top: 5, bottom: 5, right: 10, left: 12),
+    hintText: hint,
+    isDense: true,
+    fillColor: Theme.of(context).cardColor,
+    hintStyle: const TextStyle(fontSize: 12),
+    border:outlineInputBorder ,
+    disabledBorder: outlineInputBorder,
+    enabledBorder: outlineInputBorder,
+    focusedBorder: isColorBorder ? OutlineInputBorder(
+        borderSide: BorderSide(color: Theme.of(context).primaryColor,width: 1), borderRadius: const BorderRadius.all(Radius.circular(8))) : outlineInputBorder,
+
+  );
+}
+
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${this.substring(1).toLowerCase()}";
+  }
+}
+bool hasNumber(String input) {
+  // Regular expression to check if the string contains a number
+  final RegExp regex = RegExp(r'\d');
+  return regex.hasMatch(input);
+}
+
+bool hasOnlyLetters(String input) {
+  // Regular expression to check if the string consists entirely of letters
+  final RegExp regex = RegExp(r'^[a-zA-Z]+$');
+  return regex.hasMatch(input);
 }

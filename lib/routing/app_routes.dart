@@ -1,28 +1,26 @@
 
 
 import 'package:book_my_turf_dashboard/features/auth/login_screen.dart';
-import 'package:book_my_turf_dashboard/features/dashboard/presentation/dasboard.dart';
-import 'package:book_my_turf_dashboard/features/dashboard/presentation/user_list_screen.dart';
-import 'package:book_my_turf_dashboard/features/home_screen.dart';
+import 'package:book_my_turf_dashboard/features/root_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:lottie/lottie.dart';
 
 import '../consatant/Constants.dart';
+import '../features/home/home_screen.dart';
+import '../features/home/user/presentation/user_list_screen.dart';
 
 class AppRoute {
   static const loginScreen = "login_screen";
-  static const dashboard = "dasboard";
+  static const homeScreen = "home_screen";
   static const userListScreen = 'user_list_screen';
-  //static const homeScreen = 'home_screen';
+  static const rootScreen = 'root_screen';
 
 
   static Map<String, Widget Function(BuildContext)> routes = {
     loginScreen: (p0) =>  LoginScreen(),
-    dashboard: (p0) =>  Dashboard(),
+    homeScreen: (p0) =>  HomeScreen(),
     userListScreen: (p0) =>  UserListScreen(),
-    //homeScreen: (p0) =>  HomeScreen(),
+    rootScreen: (p0) =>  RootScreen(),
   };
 }
 

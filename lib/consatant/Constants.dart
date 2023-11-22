@@ -1,19 +1,21 @@
 import 'package:supabase/supabase.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Constants{
-  static String supabaseUrl = "https://vknomtfmqlwordnhnsjm.supabase.co";
-
-  static SupabaseClient supabase = SupabaseClient(
-    supabaseUrl,
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrbm9tdGZtcWx3b3Jkbmhuc2ptIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODk3NzEyNjUsImV4cCI6MjAwNTM0NzI2NX0.0S3Ct4aWX7ZuNU_KLIgOMmeSYzbNeNF1gfsXf1mNsVM",
-    authFlowType: AuthFlowType.pkce
-  );
+  static SupabaseClient supabase = Supabase.instance.client;
+  static List<String> workoutLevels = ["Beginner", "Intermediate", "Advanced"];
 }
 
 
 class SupaTables {
 
   static String user_profile = 'user_profile';
+  static String venue_list = 'venue_list';
+  static String turf_list = 'turf_list';
+  static String owner_profile = 'owner_profile';
+  static String city = 'city';
+  static String convenience_fee = 'convenience_fee';
+  static String owner_role = "owner_role";
 }
 
 class SupaStorage {
@@ -30,6 +32,16 @@ enum AdminRole {
   workplace("Workplace");
 
   const AdminRole(this.value);
+
+  final String value;
+}
+enum VenueStatus {
+  rejected("REJECTED"),
+  pending("PENDING"),
+  inActive("INACTIVE"),
+  approved("APPROVED");
+
+  const VenueStatus(this.value);
 
   final String value;
 }

@@ -10,7 +10,9 @@ import 'package:hive/hive.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:paged_datatable/l10n/generated/l10n.dart';
 import 'package:supabase/supabase.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 import 'consatant/Constants.dart';
@@ -30,17 +32,11 @@ Future<void> main() async {
   final key = await secureStorage.read(key: 'key');
   log('key: ' + (key.toString()));
 
-   //HiveLocalStorage.encryptionKey = key;
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
-
-  //await Constants.remoteConfig.fetchAndActivate();
-
-  await SupabaseClient(
-    Constants.supabaseUrl,
+   HiveLocalStorage.encryptionKey = key;
+   await Supabase.initialize(
+    url: "https://vknomtfmqlwordnhnsjm.supabase.co",
+    anonKey:
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrbm9tdGZtcWx3b3Jkbmhuc2ptIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODk3NzEyNjUsImV4cCI6MjAwNTM0NzI2NX0.0S3Ct4aWX7ZuNU_KLIgOMmeSYzbNeNF1gfsXf1mNsVM",
-    authFlowType: AuthFlowType.pkce,
   );
 
   runApp(const ProviderScope(
@@ -57,13 +53,13 @@ class MyApp extends StatelessWidget {
       valueListenable: isDarktheme,
       builder: (context, isDarkThemVal, child) {
         return MaterialApp(
-          initialRoute: AppRoute.dashboard,
+          initialRoute: Constants.supabase.auth.currentUser?.id !=null ? AppRoute.rootScreen : AppRoute.loginScreen,
           //routerConfig: router,
           routes: AppRoute.routes,
           debugShowCheckedModeBanner: false,
           title: 'Book My Turf Dashboard',
           themeMode: isDarkThemVal ? ThemeMode.dark:ThemeMode.light,
-          //localizationsDelegates: [PagedDataTableLocalization.delegate],
+          localizationsDelegates: [PagedDataTableLocalization.delegate],
           builder: EasyLoading.init(
               builder: (context, child) =>
               child ?? SizedBox()

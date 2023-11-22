@@ -239,6 +239,7 @@ Widget TextFormFieldWithDottedBorder(
     {VoidCallback? onClicked,
     FormFieldValidator<String>? validator,
     bool isEnabled = true,
+      double? height,
     bool isReadonly = false,
     Color? txtColor = CustomColor.txtMediumGray, Function(String)? onChanged, List<TextInputFormatter>? inputFormatters, keyBoardType, maxLength}) {
   return DottedBorder(
@@ -247,7 +248,7 @@ Widget TextFormFieldWithDottedBorder(
     borderType: BorderType.RRect,
     color: CustomColor.primaryGreen,
     child: SizedBox(
-      height: 45,
+      height: height ?? 45,
       child: Padding(
         padding: const EdgeInsets.only(top: 15),
         child: TextFormField(
@@ -258,11 +259,17 @@ Widget TextFormFieldWithDottedBorder(
           style: TextStyle(color: txtColor, fontSize: 16, fontWeight: FontWeight.normal),
           onTap: onClicked,
           onChanged: onChanged,
-          decoration: InputDecoration(filled: true, hintText: hint, counterText: "",
+          decoration: InputDecoration(
+            filled: false,
+            hintText: hint,
+            counterText: "",
             fillColor: Theme.of(context).cardColor,
-            hintStyle: const TextStyle(color: CustomColor.txtLightGray, fontSize: 16,
+            hintStyle: const TextStyle(
+                color: CustomColor.txtLightGray,
+                fontSize: 16,
                 fontWeight: FontWeight.normal),
-            border: const OutlineInputBorder(borderSide: BorderSide.none,
+            border: const OutlineInputBorder(
+                borderSide: BorderSide.none,
                 borderRadius: BorderRadius.all(Radius.circular(10))),
           ),
           inputFormatters: inputFormatters,
