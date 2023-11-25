@@ -5,10 +5,8 @@ import 'package:book_my_turf_dashboard/features/home/venues/presentation/venue_d
 import 'package:book_my_turf_dashboard/utility/utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_web_data_table/web_data_table.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paged_datatable/paged_datatable.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../../../../consatant/ColorConstant.dart';
 import '../../../../consatant/Constants.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -21,7 +19,6 @@ class VenueListScreen extends HookConsumerWidget {
 
   VenueListScreen({super.key});
 
-  late final VenueDataSource? venueDataSource;
   final controller = PagedDataTableController<int, Map<dynamic, dynamic>>();
 
   @override
@@ -32,8 +29,8 @@ class VenueListScreen extends HookConsumerWidget {
     var sizeFactor = 0.1;
 
     var txtController = useTextEditingController();
-
-
+    var cityController = useTextEditingController();
+    var selectedCityList = useState([]);
 
     return cities.when(data: (cityList) {
 
@@ -41,7 +38,7 @@ class VenueListScreen extends HookConsumerWidget {
         // filters: [TextTableFilter(chipFormatter: (value) => 'By $value', id: 'name', title: 'Trainer\'s Name')],TODO pending
         controller: controller,
         theme: PagedDataTableThemeData(
-            configuration: const PagedDataTableConfiguration(pageSizes: [10,20,50,100],initialPageSize: 10),
+            configuration:  PagedDataTableConfiguration(pageSizes: [10,20,50,100],initialPageSize: 10,filterBarHeight: selectedCityList.value.isEmpty ? 120 : 250),
             footerTextStyle: Theme.of(context).textTheme.bodyMedium,
             headerTextStyle: Theme.of(context).textTheme.titleLarge,
             rowsTextStyle: Theme.of(context).textTheme.bodyMedium ?? defaultText,
@@ -53,32 +50,118 @@ class VenueListScreen extends HookConsumerWidget {
 
           var venueList;
 
-          if(ref.read(venueSearchValueProvider).isNotEmpty)
+          if(ref.read(venueSearchValueProvider).isNotEmpty && ref.read(venueCitySearchValueProvider).isEmpty)
           {
             venueList = await Constants.supabase.from(SupaTables.venue_list).select().ilike('venue_name', "%${ref.read(venueSearchValueProvider)}%").range(pageToken, pageToken + pageSize);
-            //venueList = await Constants.supabase.from(SupaTables.venue_list).select().ilike('venue_name', "%${ref.read(venueSearchValueProvider)}%").or('city.ilike.%${ref.read(venueSearchValueProvider)}%').range(pageToken, pageToken + pageSize);
-            // users = await Constants.supabase
-            //     .from(SupaTables.user_profile)
+
+            // venueList = await Constants.supabase
+            //     .from(SupaTables.venue_list)
             //     .select()
-            //     .or('first_name.eq.${filtering.valueOrNull('name')},last_name.eq.${filtering.valueOrNull('name')}').range(pageToken, pageToken + pageSize);;
-           // venueList = await Constants.supabase.from(SupaTables.venue_list).
+            //     .or('venue_name.ilike."%${ref.read(venueSearchValueProvider)}%",city.ilike."%${ref.read(venueSearchValueProvider)}%"').range(pageToken, pageToken + pageSize);;
           }
+          else if(ref.read(venueSearchValueProvider).isEmpty && ref.read(venueCitySearchValueProvider).isNotEmpty){
+            venueList = await Constants.supabase.from(SupaTables.venue_list).select().ilike('city', "%${ref.read(venueCitySearchValueProvider)}%").range(pageToken, pageToken + pageSize);
+
+          }
+           else if(ref.read(venueCitySearchValueProvider).isNotEmpty && ref.read(venueSearchValueProvider).isNotEmpty)
+           {
+            venueList = await Constants.supabase
+                .from(SupaTables.venue_list)
+                .select().ilike('venue_name', "%${ref.read(venueSearchValueProvider)}%").eq('city', ref.read(venueCitySearchValueProvider));
+           }
           else
           {
             venueList = await Constants.supabase.from(SupaTables.venue_list).select().range(pageToken, pageToken + pageSize);
           }
-          return PaginationResult.items(elements: [...venueList as List], nextPageToken: (venueList as List).length < pageSize  ? null : pageToken + pageSize, size: (venueList as List).length);
+          return PaginationResult.items(elements: [...venueList as List], nextPageToken: (venueList).length < pageSize  ? null : pageToken + pageSize, size: (venueList as List).length);
         },
         initialPage: 0,
-        header: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormFieldWithDottedBorder(context, txtController, "Search",onChanged: (p0) async {
+        header: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormFieldWithDottedBorder(context, cityController, ref.read(venueCitySearchValueProvider).isNotEmpty ? ref.read(venueCitySearchValueProvider) : "Search city",height: 35,onChanged: (p0) async {
+                List list = await Constants.supabase.from(SupaTables.city).select().ilike('name', "%${p0}%").eq("country_id", 101).order('name',ascending: true);
+                selectedCityList.value = _filterCities(list.map((e) => e['name'],).toList(), p0);
+                if(p0.isEmpty){
+                  selectedCityList.value.clear();
+                  ref.read(venueCitySearchValueProvider.notifier).state = '';
+                  ref.read(venueSearchValueProvider.notifier).state = '';
+                  controller.refresh();
+                }
 
-            ref.read(venueSearchValueProvider.notifier).state = p0;
-            controller.refresh();
+              },),
+            ),
+            SizedBox(
+              height: selectedCityList.value.isEmpty ? 0 : 100,
+              child: ListView.builder(
+                itemCount: selectedCityList.value.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
 
-          },),
+                    return ListTile(contentPadding:EdgeInsets.zero,title: Text(selectedCityList.value[index]),onTap: () {
+                      ref.read(venueCitySearchValueProvider.notifier).state = selectedCityList.value[index];
+                      cityController.text = selectedCityList.value[index];
+                      controller.refresh();
+                      print("vjnvufio ${ref.read(venueCitySearchValueProvider)}");
+                    },);
+                  },
+                ),
+            ),
+              // SearchChoices.single(
+            //   items: cityList.map((item) {
+            //     return DropdownMenuItem(
+            //       value: item,
+            //       child: Text(
+            //         item,
+            //         style: const TextStyle(
+            //             color: CustomColor.txtMediumGray,
+            //             fontSize: 16,
+            //             fontWeight: FontWeight.normal),
+            //       ),
+            //     );
+            //   }).toList(),
+            //   value: selectedValueSingleDialog.value,
+            //   hint: "Select one",
+            //   searchHint: "Select one",
+            //   onChanged: (value) {
+            //     selectedValueSingleDialog.value = value;
+            //   },
+            // ),
+            // SearchableDropdown<dynamic>(
+            //   hintText: const Text('Select city'),
+            //   isEnabled: true,
+            //   margin: const EdgeInsets.all(15),
+            //   items: List.generate(cityList.length,  (index) {
+            //       return SearchableDropdownMenuItem(
+            //           value: cityList[index],
+            //           label: cityList[index],
+            //           child: Text(cityList[index]));
+            //     }),
+            //
+            //   onChanged: (value) {
+            //     debugPrint('$value');
+            //   },
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 13.0,left: 8,right: 8,bottom: 8),
+            //   child: TextFormFieldWithDottedBorder(context, cityController, "Search city",height: 35,onChanged: (p0) async {
+            //
+            //     ref.read(venueCitySearchValueProvider.notifier).state = p0;
+            //     controller.refresh();
+            //
+            //   },),
+            // ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormFieldWithDottedBorder(context, txtController, "Search venue name",height: 35,onChanged: (p0) async {
+                ref.read(venueSearchValueProvider.notifier).state = p0;
+                controller.refresh();
+              },),
+            )
+          ],
         ),
+        
         // filters: [
         //   TextTableFilter(chipFormatter: (name) => 'By $name', id: 'venue_name', title: "Venue Name"),
         //   DropdownTableFilter<dynamic>(
@@ -169,12 +252,6 @@ class VenueListScreen extends HookConsumerWidget {
             title: 'View Details',
             cellBuilder: (p0) => IconButton(
                 onPressed: () {
-                  print("vfnugh9t34 ${p0}");
-                  var map = Map<String, dynamic>.from(p0);
-                  // map['category'] = itemName;
-                  // map['to'] = GoRouter.of(context).routerDelegate.currentConfiguration.uri.toString();
-                  // context.goNamed(p0.containsKey('source') ? AppRoute.editMeditationArticle : AppRoute.editMeditationVideo,
-                  //     queryParameters: map.map((key, value) => MapEntry(key.toString(), value.toString())));
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -189,45 +266,12 @@ class VenueListScreen extends HookConsumerWidget {
       );
     }, error: (error, stackTrace) => Text(error.toString()), loading: () => Center(child: CircularProgressIndicator(),),);
   }
-}
-
-class VenueDataSource extends DataGridSource {
-  VenueDataSource({required List<VenueEntity> venueData}) {
-    _employeeData = venueData
-        .map<DataGridRow>((e) {
-          return DataGridRow(
-              cells: [
-      DataGridCell<String>(columnName: 'Name', value: e.venueName),
-      DataGridCell<String>(columnName: 'Location', value: e.venueLocation),
-      DataGridCell<int>(columnName: 'Phone', value: e.phone),
-      DataGridCell<String>(columnName: 'Email', value: e.email ?? '-'),
-      DataGridCell<String>(columnName: 'Website', value: e.website ?? '-'),
-      DataGridCell<String>(columnName: 'Country', value: e.country),
-      DataGridCell<String>(columnName: 'State', value: e.state),
-      DataGridCell<String>(columnName: 'City', value: e.city),
-      DataGridCell<String>(columnName: 'Status', value: e.status),
-      DataGridCell<String>(columnName: 'Venue Description', value: e.venueDescription ?? '-'),
-      DataGridCell<String>(columnName: 'Detaails', value: "Details" ?? '-'),
-    ]);
-        }).toList();
-  }
-
-  List<DataGridRow> _employeeData = [];
-
-  @override
-  List<DataGridRow> get rows => _employeeData;
-
-  @override
-  DataGridRowAdapter buildRow(DataGridRow row) {
-    return DataGridRowAdapter(
-
-        cells: row.getCells().map<Widget>((e) {
-          return Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(8.0),
-            child: GestureDetector(onTap: () {
-            },child: Text(e.value.toString(),)),
-          );
-        }).toList());
+  List<dynamic> _filterCities(List<dynamic> cities, query) {
+    if (query.isEmpty) {
+      return cities;
+    } else {
+      return cities.where((city) => city.toLowerCase().contains(query)).toList();
+    }
   }
 }
+

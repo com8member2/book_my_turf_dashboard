@@ -29,9 +29,12 @@ Future<List> getStaff(GetStaffRef ref,id) async {
 @riverpod
 Future<List> getAllVenuesCity(GetAllVenuesCityRef ref)  async {
   var cities;
-  List list =  await Constants.supabase.from(SupaTables.venue_list).select('city');
-  cities = list.map((e) =>  e['city']).toSet().toList();
-  print("city set ${cities}");
+  List list =  await Constants.supabase.from(SupaTables.city).select('name').eq('country_id', 101);
+   cities = list.map((e) =>  e['name']).toSet().toList();
+  //log('all cities ${cities}');
+  // List list =  await Constants.supabase.from(SupaTables.venue_list).select('city');
+  // cities = list.map((e) =>  e['city']).toSet().toList();
+  // print("city set ${cities}");
   return cities;
 }
 
@@ -44,5 +47,17 @@ Future<List> getAllVenues(GetAllVenuesRef ref) async {
 @riverpod
 class venueSearchValue extends _$venueSearchValue {
   @override
-  String build() => '';
+  String build() {
+    ref.keepAlive();
+    return '';
+  }
+}
+
+@riverpod
+class venueCitySearchValue extends _$venueCitySearchValue {
+  @override
+  String build() {
+    ref.keepAlive();
+    return '';
+  }
 }

@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Book My Turf Dashboard"
-#define MyAppVersion "6.0"
+#define MyAppVersion "8.0"
 #define MyAppPublisher "My Company, Inc."
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "book_my_turf_dashboard.exe"

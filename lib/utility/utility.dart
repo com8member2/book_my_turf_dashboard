@@ -1,14 +1,6 @@
-import 'package:flutter/cupertino.dart';
-
-import 'package:elegant_notification/elegant_notification.dart';
-import 'package:elegant_notification/resources/arrays.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-
 import '../consatant/Constants.dart';
-import '../routing/app_routes.dart';
 import '../consatant/ColorConstant.dart';
 
 BoxDecoration shadow(BuildContext context, [Color? scaffoldBackgroundColor]) {

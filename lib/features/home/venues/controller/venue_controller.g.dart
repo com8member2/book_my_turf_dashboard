@@ -281,7 +281,7 @@ class _GetStaffProviderElement extends AutoDisposeFutureProviderElement<List>
   dynamic get id => (origin as GetStaffProvider).id;
 }
 
-String _$getAllVenuesCityHash() => r'a689fcad08770aecaa3162bc004b2f369dee13d9';
+String _$getAllVenuesCityHash() => r'ee33e7dc18c042287a26c6bcee7ba0fa0c386637';
 
 /// See also [getAllVenuesCity].
 @ProviderFor(getAllVenuesCity)
@@ -310,7 +310,7 @@ final getAllVenuesProvider = AutoDisposeFutureProvider<List>.internal(
 );
 
 typedef GetAllVenuesRef = AutoDisposeFutureProviderRef<List>;
-String _$venueSearchValueHash() => r'9f68611f37b9ba919e9470e9f1682178f4bbe339';
+String _$venueSearchValueHash() => r'b850be65a1488b46dcc9b3aab2502521920b4c49';
 
 /// See also [venueSearchValue].
 @ProviderFor(venueSearchValue)
@@ -326,5 +326,22 @@ final venueSearchValueProvider =
 );
 
 typedef _$venueSearchValue = AutoDisposeNotifier<String>;
+String _$venueCitySearchValueHash() =>
+    r'1adbb5b4947aee020a7164e15571917dc3056eb1';
+
+/// See also [venueCitySearchValue].
+@ProviderFor(venueCitySearchValue)
+final venueCitySearchValueProvider =
+    AutoDisposeNotifierProvider<venueCitySearchValue, String>.internal(
+  venueCitySearchValue.new,
+  name: r'venueCitySearchValueProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$venueCitySearchValueHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$venueCitySearchValue = AutoDisposeNotifier<String>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

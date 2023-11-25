@@ -3,7 +3,10 @@ import 'dart:developer';
 
 import 'package:book_my_turf_dashboard/routing/app_routes.dart';
 import 'package:book_my_turf_dashboard/utility/utility.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive/hive.dart';
@@ -16,6 +19,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 import 'consatant/Constants.dart';
+
 
 
 Future<void> main() async {
@@ -38,8 +42,7 @@ Future<void> main() async {
     anonKey:
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrbm9tdGZtcWx3b3Jkbmhuc2ptIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODk3NzEyNjUsImV4cCI6MjAwNTM0NzI2NX0.0S3Ct4aWX7ZuNU_KLIgOMmeSYzbNeNF1gfsXf1mNsVM",
   );
-
-  runApp(const ProviderScope(
+   runApp(const ProviderScope(
     child: MyApp(),
   ));
 }

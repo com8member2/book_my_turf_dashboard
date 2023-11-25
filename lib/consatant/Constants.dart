@@ -1,8 +1,10 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:supabase/supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Constants{
   static SupabaseClient supabase = Supabase.instance.client;
+  static FirebaseMessaging messaging = FirebaseMessaging.instance;
   static List<String> workoutLevels = ["Beginner", "Intermediate", "Advanced"];
 }
 
@@ -16,6 +18,8 @@ class SupaTables {
   static String city = 'city';
   static String convenience_fee = 'convenience_fee';
   static String owner_role = "owner_role";
+  static String firebase_messaging_keys = "firebase_messaging_keys";
+  static String bookings = "bookings";
 }
 
 class SupaStorage {
@@ -24,6 +28,7 @@ class SupaStorage {
 
 class PrefKeys{
   static String isDarkTheme = 'isDarkTheme';
+  static String fcmToken = 'fcmToken';
 }
 
 enum AdminRole {
@@ -42,6 +47,18 @@ enum VenueStatus {
   approved("APPROVED");
 
   const VenueStatus(this.value);
+
+  final String value;
+}
+
+enum BookingStatus {
+
+  rejected("REJECTED"),
+  pending("PENDING"),
+  booked("BOOKED"),
+  completed("COMPLETED");
+
+  const BookingStatus(this.value);
 
   final String value;
 }

@@ -74,7 +74,8 @@ class VenueDetails extends HookConsumerWidget {
                     onChanged: (String? newValue) async {
                       if (newValue != null) {
                         selectedItem.value = newValue;
-                        if(selectedItem.value == VenueStatus.rejected.value){
+                        if(selectedItem.value == VenueStatus.rejected.value)
+                        {
                           print("selectedItem.value ${selectedItem.value}");
 
                           showDialog(
@@ -94,9 +95,13 @@ class VenueDetails extends HookConsumerWidget {
                                       },
                                       child: const Text('Cancel')),
                                   TextButton(
-                                    onPressed: () {
-                                      print(
-                                          "rejectMessageController ${rejectMessageController.text}");
+                                    onPressed: () async {
+                                      await Constants.supabase.rpc('send_push_notification', params: {
+                                        'receiver_user_id': '',
+                                        'title': 'Reject Notification',
+                                        'message': 'Your venue has been rejected please check your venue details again'
+                                      });
+                                      print("rejectMessageController ${rejectMessageController.text}");
                                       Navigator.pop(context);
                                     },
                                     child: const Text("Send"),

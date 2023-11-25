@@ -1,6 +1,8 @@
 import 'package:book_my_turf_dashboard/consatant/ColorConstant.dart';
 import 'package:book_my_turf_dashboard/features/home/settings/settings.dart';
 import 'package:book_my_turf_dashboard/shared/widget/custom_image_view.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ready/ready.dart';
@@ -9,7 +11,8 @@ import '../../../routing/app_routes.dart';
 import '../consatant/Constants.dart';
 import '../shared/widget/common_switch_for_change_theme.dart';
 import '../utility/utility.dart';
-
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'home/booking/presentation/booking_screen.dart';
 import 'home/home_screen.dart';
 import 'home/organization/presentation/convenience_screen.dart';
 import 'home/owner/presentation/owner_list_screen.dart';
@@ -58,7 +61,7 @@ class RootScreen extends HookConsumerWidget {
         ),
 
         DashboardItem(
-          builder: (parameters) => Center(child: Text("Bookings")),
+          builder: (parameters) => BookingScreen(),
           label: 'Bookings',
           id: 'booking',
           icon: Icon(
