@@ -1,10 +1,9 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:supabase/supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Constants{
   static SupabaseClient supabase = Supabase.instance.client;
-  static FirebaseMessaging messaging = FirebaseMessaging.instance;
+  //static FirebaseMessaging messaging = FirebaseMessaging.instance;
   static List<String> workoutLevels = ["Beginner", "Intermediate", "Advanced"];
 }
 
@@ -20,6 +19,7 @@ class SupaTables {
   static String owner_role = "owner_role";
   static String firebase_messaging_keys = "firebase_messaging_keys";
   static String bookings = "bookings";
+  static String coupons = "coupons";
 }
 
 class SupaStorage {

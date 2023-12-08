@@ -104,7 +104,7 @@ class ConvenienceScreen extends HookConsumerWidget {
         ),
       ],
 
-    );
+    ) ;
   }
   List<dynamic> _filterCities(List<dynamic> cities, query) {
     if (query.isEmpty) {

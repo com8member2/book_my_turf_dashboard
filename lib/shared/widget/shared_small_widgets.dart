@@ -3,8 +3,9 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
+import 'package:dropdown_search/dropdown_search.dart';
 import '../../consatant/ColorConstant.dart';
+import '../../utility/utility.dart';
 import 'back_button.dart';
 import 'custom_button.dart';
 import 'custom_image_view.dart';
@@ -424,3 +425,147 @@ Widget TextFormFieldWithDottedBorder(
 //     );
 //   }
 // }
+
+class TextFieldWithLable extends StatelessWidget {
+  final String lable;
+
+  final String hint;
+
+  final double? textfieldWidth;
+  final TextEditingController controller;
+  final FormFieldValidator<String>? validator;
+  final TextInputType keyboardType;
+  final bool isEnable;
+  final bool obscureText;
+  final int? maxLength;
+  final Widget? prefix;
+  final List<TextInputFormatter>? inputFormatters;
+  final Widget? suffix;
+  final Function()? onTap;
+  final bool isColorBorder;
+  final int? maxLine;
+  final TextInputAction? textInputAction;
+  final Iterable<String>? autofillHints;
+
+  const TextFieldWithLable(
+      {required this.lable,
+        required this.hint,
+        required this.controller,
+        this.textfieldWidth,
+        this.validator,
+        super.key,
+        this.keyboardType = TextInputType.text,
+        this.isEnable = true,
+        this.onTap,
+        this.prefix,
+        this.maxLength,
+        this.obscureText = false,
+        this.suffix,
+        this.isColorBorder = true,
+        this.maxLine = 1,
+        this.inputFormatters,
+        this.textInputAction,
+        this.autofillHints});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 5),
+        Text(lable, style: Theme.of(context).textTheme.titleMedium),
+        Padding(
+          padding: const EdgeInsets.only(top: 5, bottom: 10),
+          child: SizedBox(
+            width: textfieldWidth,
+            child: TextFormField(
+              obscureText: obscureText,
+              onTap: onTap,
+              readOnly: onTap != null,
+              controller: controller,
+              enabled: isEnable,
+              textInputAction: textInputAction,
+              autocorrect: false,
+              inputFormatters: inputFormatters,
+              maxLength: maxLength,
+              autofillHints: autofillHints,
+              maxLines: maxLine,
+              decoration: textFieldDecorationForProfile(hint, context, isColorBorder: isColorBorder).copyWith(
+                prefixIcon: prefix,
+                suffixIcon: suffix,
+              ),
+              validator: validator,
+              keyboardType: keyboardType,
+              scrollPadding: EdgeInsets.only(bottom: 110),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class DropdownWithLabel extends StatelessWidget {
+  const DropdownWithLabel({
+    super.key,
+    required this.controller,
+    required this.itemsList,
+    required this.hintText,
+    this.validator,
+    required this.lable,
+    this.selectedItem, this.isEnabled = true,
+  });
+
+  final TextEditingController controller;
+  final List<String> itemsList;
+  final String hintText;
+  final String? selectedItem;
+  final String lable;
+  final bool isEnabled;
+  final String? Function(String?)? validator;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 5),
+        Text(lable, style: Theme.of(context).textTheme.titleMedium),
+        Padding(
+          padding: const EdgeInsets.only(top: 5, bottom: 10),
+          child: DropdownSearch<String>(enabled: isEnabled,
+            onChanged: (value) {
+              if (value == null) return;
+              controller.text = value;
+            },
+            popupProps: PopupProps.menu(
+              fit: FlexFit.loose,
+              searchDelay: Duration(),
+              searchFieldProps: TextFieldProps(
+                  decoration: InputDecoration(
+                      hintText: 'Search here', prefixIcon: Icon(Icons.search), border: OutlineInputBorder(borderRadius: BorderRadius.circular(12))),
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
+              showSearchBox: true,
+              showSelectedItems: true,
+            ),
+            validator: validator,
+            items: itemsList,
+            dropdownDecoratorProps: DropDownDecoratorProps(
+              dropdownSearchDecoration: InputDecoration(
+                hoverColor: Theme.of(context).hoverColor,
+                contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                enabledBorder:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Theme.of(context).primaryColor)),
+                focusedBorder:
+                OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Theme.of(context).primaryColor)),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Theme.of(context).primaryColor)),
+                hintText: hintText,
+              ),
+            ),
+            selectedItem: selectedItem,
+          ),
+        ),
+      ],
+    );
+  }
+}

@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:book_my_turf_dashboard/consatant/ColorConstant.dart';
 import 'package:book_my_turf_dashboard/routing/app_routes.dart';
+import 'package:book_my_turf_dashboard/shared/no_internet_screen.dart';
 import 'package:book_my_turf_dashboard/utility/utility.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_no_internet_widget/flutter_no_internet_widget.dart';
 import 'package:hive/hive.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -55,7 +56,12 @@ class MyApp extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: isDarktheme,
       builder: (context, isDarkThemVal, child) {
-        return MaterialApp(
+        return InternetWidget(
+            offline: FullScreenWidget(child: NoInternetScreen()),
+
+            whenOffline: () => print('no internet'),
+            whenOnline: () => print('Connected to internet'),
+            online: MaterialApp(
           initialRoute: Constants.supabase.auth.currentUser?.id !=null ? AppRoute.rootScreen : AppRoute.loginScreen,
           //routerConfig: router,
           routes: AppRoute.routes,
@@ -67,9 +73,9 @@ class MyApp extends StatelessWidget {
               builder: (context, child) =>
               child ?? SizedBox()
           ),
-          darkTheme: FlexThemeData.dark(useMaterial3: true, scheme: FlexScheme.vesuviusBurn),
-          theme: FlexThemeData.light(useMaterial3: true, scheme: FlexScheme.vesuviusBurn),
-        );
+          darkTheme: FlexThemeData.dark(useMaterial3: true, scheme: FlexScheme.green),
+          theme: FlexThemeData.light(useMaterial3: true, scheme: FlexScheme.greenM3,primary: CustomColor.primaryGreen),
+        ));
       },
     );
   }

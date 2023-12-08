@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import '../../../consatant/ColorConstant.dart';
 import '../../../shared/widget/common_bottom_align.dart';
@@ -72,24 +73,30 @@ class LoginScreen extends HookConsumerWidget {
                               padding: const EdgeInsets.symmetric(vertical: 20),
                               child: CustomButton('Continue', () async {
 
-                            try {
-                              await Constants.supabase.auth.signInWithPassword(password: passwordController.text, email: emailController.text).then(
-                                (value) {
+                                if(await InternetConnectionChecker().hasConnection){
+                                  try {
+                                    await Constants.supabase.auth.signInWithPassword(password: passwordController.text, email: emailController.text).then(
+                                          (value) {
 
-                                  var res = value.user;
-                                  if(res !=null){
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => RootScreen()));
-                                    //Navigator.pushNamed(context, AppRoute.rootScreen);
+                                        var res = value.user;
+                                        if(res !=null){
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => RootScreen()));
+                                          //Navigator.pushNamed(context, AppRoute.rootScreen);
+                                        }
+                                      },
+                                    );
+                                  }  catch (e) {
+                                    print(e.toString());
+
                                   }
-                                },
-                              );
-                            }  catch (e) {
-                              print(e.toString());
-                              EasyLoading.showError(e.toString());
-                            }
+                                }
+                                else{
+                                  EasyLoading.showError("Please check your internet connection and try again");
+                                }
+
                           }),
                         )
                           ],

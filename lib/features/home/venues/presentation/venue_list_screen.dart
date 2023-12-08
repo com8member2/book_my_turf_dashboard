@@ -19,7 +19,7 @@ class VenueListScreen extends HookConsumerWidget {
 
   VenueListScreen({super.key});
 
-  final controller = PagedDataTableController<int, Map<dynamic, dynamic>>();
+  var controller;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,9 +32,13 @@ class VenueListScreen extends HookConsumerWidget {
     var cityController = useTextEditingController();
     var selectedCityList = useState([]);
 
+    useEffect(() {
+      controller = PagedDataTableController<int, Map<dynamic, dynamic>>();
+    },);
+
     return cities.when(data: (cityList) {
 
-      return PagedDataTable<int, Map>(
+      return  PagedDataTable<int, Map>(
         // filters: [TextTableFilter(chipFormatter: (value) => 'By $value', id: 'name', title: 'Trainer\'s Name')],TODO pending
         controller: controller,
         theme: PagedDataTableThemeData(
@@ -161,7 +165,7 @@ class VenueListScreen extends HookConsumerWidget {
             )
           ],
         ),
-        
+
         // filters: [
         //   TextTableFilter(chipFormatter: (name) => 'By $name', id: 'venue_name', title: "Venue Name"),
         //   DropdownTableFilter<dynamic>(
@@ -263,7 +267,7 @@ class VenueListScreen extends HookConsumerWidget {
           ),
         ],
 
-      );
+      ) ;
     }, error: (error, stackTrace) => Text(error.toString()), loading: () => Center(child: CircularProgressIndicator(),),);
   }
   List<dynamic> _filterCities(List<dynamic> cities, query) {

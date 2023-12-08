@@ -1,10 +1,11 @@
 import 'package:book_my_turf_dashboard/consatant/ColorConstant.dart';
 import 'package:book_my_turf_dashboard/features/home/settings/settings.dart';
 import 'package:book_my_turf_dashboard/shared/widget/custom_image_view.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:ready/ready.dart';
 
 import '../../../routing/app_routes.dart';
@@ -13,6 +14,7 @@ import '../shared/widget/common_switch_for_change_theme.dart';
 import '../utility/utility.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'home/booking/presentation/booking_screen.dart';
+import 'home/coupn/presentation/coupn_list_screen.dart';
 import 'home/home_screen.dart';
 import 'home/organization/presentation/convenience_screen.dart';
 import 'home/owner/presentation/owner_list_screen.dart';
@@ -24,6 +26,27 @@ class RootScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
+    var isInternetConnection = useState(false);
+
+    useEffect(() {
+
+       InternetConnectionChecker().hasConnection.then((value) {
+         isInternetConnection.value = value;
+         if(!value){
+         EasyLoading.showError("Please check your internet connection and try again",duration: Duration(seconds: 3));
+         }
+      },);
+
+      // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      //   if(!await InternetConnectionChecker().hasConnection){
+      //     EasyLoading.showError("Please check your internet connection and try again");
+      //
+      //   }
+      // });
+
+    },);
+
     return ReadyDashboard(
       iconsWhenCollapsedInDesktop: true,
       appBarOptions: (phone) => AppBarOptions(
@@ -102,7 +125,7 @@ class RootScreen extends HookConsumerWidget {
             ),
           ),
           DashboardItem(
-            builder: (parameters) => Text("Coupon"),
+            builder: (parameters) => CouponListScreen(),
             label: 'Coupon ',
             id: 'coupon',
             icon: Icon(Icons.card_membership),

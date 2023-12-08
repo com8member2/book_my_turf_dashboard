@@ -21,7 +21,7 @@ class BookingScreen extends HookConsumerWidget {
 
   BookingScreen({super.key});
 
-  final controller = PagedDataTableController<int, Map<dynamic, dynamic>>();
+  var controller;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,6 +32,10 @@ class BookingScreen extends HookConsumerWidget {
     var txtController = useTextEditingController();
     var cityController = useTextEditingController();
     var selectedCityList = useState([]);
+
+    useEffect(() {
+      controller = PagedDataTableController<int, Map<dynamic, dynamic>>();
+    },);
 
     return  PagedDataTable<int, Map>(
       // filters: [TextTableFilter(chipFormatter: (value) => 'By $value', id: 'name', title: 'Trainer\'s Name')],TODO pending
@@ -59,9 +63,16 @@ class BookingScreen extends HookConsumerWidget {
           sizeFactor: sizeFactor,
           title: 'User Name',
           cellBuilder: (p0) {
-            return ref.watch(getAllBookingUsersProvider(p0['user_id'])).when(data: (data) {
-              return Text("${data[0]['name']}");
-            }, error: (error, stackTrace) => Text(error.toString()), loading: () => SizedBox(),);
+            
+             if(p0['user_id'] !=null) {
+               return ref.watch(getAllBookingUsersProvider(p0['user_id'],)).when(data: (data) {
+                 return Text("${data[0]['name']}");
+               }, error: (error, stackTrace) => Text(error.toString()), loading: () => SizedBox(),);
+             }
+             else{
+               return Text(p0['user_name']);
+             }
+           
           },
         ),
         TableColumn(
@@ -80,13 +91,6 @@ class BookingScreen extends HookConsumerWidget {
             return Text("${p0['price']}");
           },
         ),
-        // TableColumn(
-        //   sizeFactor: sizeFactor,
-        //   title: 'Date',
-        //   cellBuilder: (p0) {
-        //     return Text("${p0['date'].toString().replaceAll("[", "").replaceAll("]", "")}");
-        //   },
-        // ),
         TableColumn(
           sizeFactor: sizeFactor,
           title: 'Status',
@@ -94,9 +98,6 @@ class BookingScreen extends HookConsumerWidget {
             return Text("${p0['status']}");
           },
         ),
-
-
-
         TableColumn(
           sizeFactor: sizeFactor,
           title: 'View Details',
@@ -108,7 +109,7 @@ class BookingScreen extends HookConsumerWidget {
         ),
       ],
 
-    );
+    ) ;
   }
 }
 

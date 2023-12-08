@@ -284,5 +284,133 @@ class _GetAllBookingVenueProviderElement
   @override
   dynamic get id => (origin as GetAllBookingVenueProvider).id;
 }
+
+String _$getBookingTurfHash() => r'3c1c4334b92d89614ab9ee8d9cb02ebc415fbecf';
+
+/// See also [getBookingTurf].
+@ProviderFor(getBookingTurf)
+const getBookingTurfProvider = GetBookingTurfFamily();
+
+/// See also [getBookingTurf].
+class GetBookingTurfFamily extends Family<AsyncValue<List>> {
+  /// See also [getBookingTurf].
+  const GetBookingTurfFamily();
+
+  /// See also [getBookingTurf].
+  GetBookingTurfProvider call(
+    List<dynamic> id,
+  ) {
+    return GetBookingTurfProvider(
+      id,
+    );
+  }
+
+  @override
+  GetBookingTurfProvider getProviderOverride(
+    covariant GetBookingTurfProvider provider,
+  ) {
+    return call(
+      provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getBookingTurfProvider';
+}
+
+/// See also [getBookingTurf].
+class GetBookingTurfProvider extends AutoDisposeFutureProvider<List> {
+  /// See also [getBookingTurf].
+  GetBookingTurfProvider(
+    List<dynamic> id,
+  ) : this._internal(
+          (ref) => getBookingTurf(
+            ref as GetBookingTurfRef,
+            id,
+          ),
+          from: getBookingTurfProvider,
+          name: r'getBookingTurfProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getBookingTurfHash,
+          dependencies: GetBookingTurfFamily._dependencies,
+          allTransitiveDependencies:
+              GetBookingTurfFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  GetBookingTurfProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
+  final List<dynamic> id;
+
+  @override
+  Override overrideWith(
+    FutureOr<List> Function(GetBookingTurfRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetBookingTurfProvider._internal(
+        (ref) => create(ref as GetBookingTurfRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List> createElement() {
+    return _GetBookingTurfProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetBookingTurfProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetBookingTurfRef on AutoDisposeFutureProviderRef<List> {
+  /// The parameter `id` of this provider.
+  List<dynamic> get id;
+}
+
+class _GetBookingTurfProviderElement
+    extends AutoDisposeFutureProviderElement<List> with GetBookingTurfRef {
+  _GetBookingTurfProviderElement(super.provider);
+
+  @override
+  List<dynamic> get id => (origin as GetBookingTurfProvider).id;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

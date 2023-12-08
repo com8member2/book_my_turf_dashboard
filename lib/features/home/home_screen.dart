@@ -4,8 +4,10 @@ import 'package:book_my_turf_dashboard/features/home/venues/controller/venue_con
 import 'package:book_my_turf_dashboard/shared/widget/common_switch_for_change_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import '../../shared/widget/custom_image_view.dart';
 import '../../utility/utility.dart';
@@ -19,8 +21,7 @@ class HomeScreen extends HookConsumerWidget {
     var allOwners = ref.watch(getAllOwnersProvider);
     var allVenues = ref.watch(getAllVenuesProvider);
 
-
-    return Scaffold(
+    return   Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Padding(
         padding: const EdgeInsets.only(top: 30.0, right: 30, left: 30, bottom: 20),

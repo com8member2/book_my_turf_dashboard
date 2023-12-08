@@ -27,7 +27,7 @@ class OwnerListScreen extends HookConsumerWidget {
 
     //var limit = useState(4);
 
-    return PagedDataTable<int, Map>(
+    return  PagedDataTable<int, Map>(
       // filters: [TextTableFilter(chipFormatter: (value) => 'By $value', id: 'name', title: 'Trainer\'s Name')],TODO pending
       controller: controller,
       theme: PagedDataTableThemeData(
