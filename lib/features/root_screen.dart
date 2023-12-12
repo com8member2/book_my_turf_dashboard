@@ -1,5 +1,4 @@
 import 'package:book_my_turf_dashboard/consatant/ColorConstant.dart';
-import 'package:book_my_turf_dashboard/features/home/settings/settings.dart';
 import 'package:book_my_turf_dashboard/shared/widget/custom_image_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +13,10 @@ import '../shared/widget/common_switch_for_change_theme.dart';
 import '../utility/utility.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'home/booking/presentation/booking_screen.dart';
-import 'home/coupn/presentation/coupn_list_screen.dart';
 import 'home/home_screen.dart';
-import 'home/organization/presentation/convenience_screen.dart';
+import 'home/organization/conveniencefees/presentation/convenience_screen.dart';
+import 'home/organization/coupn/presentation/coupn_list_screen.dart';
+import 'home/organization/settings/settings.dart';
 import 'home/owner/presentation/owner_list_screen.dart';
 import 'home/user/presentation/user_list_screen.dart';
 import 'home/venues/presentation/venue_list_screen.dart';
@@ -27,25 +27,8 @@ class RootScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    var isInternetConnection = useState(false);
 
-    useEffect(() {
 
-       InternetConnectionChecker().hasConnection.then((value) {
-         isInternetConnection.value = value;
-         if(!value){
-         EasyLoading.showError("Please check your internet connection and try again",duration: Duration(seconds: 3));
-         }
-      },);
-
-      // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      //   if(!await InternetConnectionChecker().hasConnection){
-      //     EasyLoading.showError("Please check your internet connection and try again");
-      //
-      //   }
-      // });
-
-    },);
 
     return ReadyDashboard(
       iconsWhenCollapsedInDesktop: true,
@@ -60,7 +43,7 @@ class RootScreen extends HookConsumerWidget {
             onTap: () async {
             showConfirmationDialog(context, 'Are you sure want to Logout?', ()  {
                Constants.supabase.auth.signOut().then((value) {
-                Navigator.pushReplacementNamed(context, AppRoute.loginScreen);
+                Navigator.pushReplacementNamed(context, AAppRoute.loginScreen);
               },);
             },);
             },
@@ -69,13 +52,15 @@ class RootScreen extends HookConsumerWidget {
           )
         ],
         headers: (expansion) =>
-            [DrawerHeader(child: Image.asset('assets/images/ground.png'))],
+            [
+              DrawerHeader(child: CustomImageView(imagePath: isDarktheme.value ? 'assets/images/splash_dark_logo (1).png' : "assets/images/splash_light_logo (1).png",))],
         //backgroundColor: CustomColor.lightGreen,
       ),
       items: [
         DashboardItem(
           builder: (parameters) => HomeScreen(),
           label: 'Home',
+
           id: 'home',
           icon: Icon(
             Icons.dashboard,

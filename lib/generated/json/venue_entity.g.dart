@@ -1,6 +1,5 @@
 import 'package:book_my_turf_dashboard/generated/json/base/json_convert_content.dart';
-
-import '../../model/venue_entity.dart';
+import 'package:book_my_turf_dashboard/model/venue_entity.dart';
 
 VenueEntity $VenueEntityFromJson(Map<String, dynamic> json) {
   final VenueEntity venueEntity = VenueEntity();
@@ -16,8 +15,7 @@ VenueEntity $VenueEntityFromJson(Map<String, dynamic> json) {
   if (venueName != null) {
     venueEntity.venueName = venueName;
   }
-  final String? venueLocation = jsonConvert.convert<String>(
-      json['venue_location']);
+  final String? venueLocation = jsonConvert.convert<String>(json['venue_location']);
   if (venueLocation != null) {
     venueEntity.venueLocation = venueLocation;
   }
@@ -33,10 +31,8 @@ VenueEntity $VenueEntityFromJson(Map<String, dynamic> json) {
   if (website != null) {
     venueEntity.website = website;
   }
-  final List<VenueAmenities>? amenities = (json['amenities'] as List<dynamic>?)
-      ?.map(
-          (e) => jsonConvert.convert<VenueAmenities>(e) as VenueAmenities)
-      .toList();
+  final List<VenueAmenities>? amenities = (json['amenities'] as List<dynamic>?)?.map(
+          (e) => jsonConvert.convert<VenueAmenities>(e) as VenueAmenities).toList();
   if (amenities != null) {
     venueEntity.amenities = amenities;
   }
@@ -77,8 +73,7 @@ VenueEntity $VenueEntityFromJson(Map<String, dynamic> json) {
   if (longitude != null) {
     venueEntity.longitude = longitude;
   }
-  final String? venueDescription = jsonConvert.convert<String>(
-      json['venue_description']);
+  final String? venueDescription = jsonConvert.convert<String>(json['venue_description']);
   if (venueDescription != null) {
     venueEntity.venueDescription = venueDescription;
   }

@@ -24,6 +24,8 @@ class BookingDetailsScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     //print("staffList ${staffList}");
 
+    print(" editItem editItem editItem ${editItem}");
+
     var selectedItem = useState<String>(editItem['status'] ?? BookingStatus.pending.value);
     var slotList = useState(editItem['slots'] as List);
     var dateList = useState(editItem['date'] as List);

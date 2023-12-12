@@ -1,3 +1,4 @@
+import 'package:book_my_turf_dashboard/model/booking_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../consatant/Constants.dart';
@@ -35,7 +36,7 @@ Future<void> changeTheme(bool themeValue, BuildContext context) async {
     value.setBool(PrefKeys.isDarkTheme, themeValue);
   },);
 }
-Image titleImage() => Image.asset(isDarktheme.value ? 'assets/images/ground.png' : 'assets/images/ground.png',height: 80,);
+Image titleImage() => Image.asset(isDarktheme.value ? 'assets/images/splash_dark_logo (1).png' : 'assets/images/splash_light_logo (1).png',height: 80,);
 
 InputDecoration textFieldDecorationForProfile(String hint, BuildContext context, {bool isColorBorder = false}) {
   final outlineInputBorder = isColorBorder
@@ -112,6 +113,8 @@ void showConfirmationDialog(
     ]),
   );
 }
+
+
 
 void showExportFileOptionsDialog(
     context,

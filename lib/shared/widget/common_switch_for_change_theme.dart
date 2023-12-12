@@ -17,6 +17,7 @@ class CommonSwitchForChangeTheme extends HookConsumerWidget {
         return Padding(
           padding: const EdgeInsets.only(top: 20.0, bottom: 20),
           child: ListTile(
+            tileColor: Theme.of(context).colorScheme.primary.withOpacity(0.15),
               onTap: () {
                 isDarktheme.value = !isDarkThemeVal;
                 changeTheme(isDarktheme.value, context);

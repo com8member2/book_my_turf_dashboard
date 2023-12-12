@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:book_my_turf_dashboard/features/home/venues/presentation/venue_details_screen.dart';
+import 'package:book_my_turf_dashboard/routing/go_app_routes.dart';
 import 'package:book_my_turf_dashboard/utility/utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paged_datatable/paged_datatable.dart';
 import '../../../../consatant/ColorConstant.dart';
@@ -256,12 +258,10 @@ class VenueListScreen extends HookConsumerWidget {
             title: 'View Details',
             cellBuilder: (p0) => IconButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => VenueDetails(
-                           VenueEntity.fromJson( Map<String, dynamic>.from(p0),)
-                          )));
+
+
+                  print("VenueEntity.fromJson ${VenueEntity.fromJson( Map<String, dynamic>.from(p0),).toJson()}");
+                  context.goNamed(AppRoute.venueDetailsScreen,extra: VenueEntity.fromJson(Map<String, dynamic>.from(p0)));
                 },
                 icon: Icon(Icons.edit_note_rounded)),
           ),

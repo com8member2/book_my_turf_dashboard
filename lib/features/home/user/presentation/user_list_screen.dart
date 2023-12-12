@@ -40,9 +40,10 @@ class UserListScreen extends HookConsumerWidget {
       fetchPage: (pageToken, pageSize, sortBy, filtering) async {
 
         //print("has number ${hasNumber(filtering.valueOrNull('name'))} ----- ${hasOnlyLetters(filtering.valueOrNull('name'))}");
-
+        print("----------- ${ref.read(userSearchValueProvider)}");
         var users ;
         if (ref.read(userSearchValueProvider).isNotEmpty) {
+          print("in ifff ${users}");
           if (hasNumber(ref.read(userSearchValueProvider))) // execute when enter phone-number
           {
             users = await Constants.supabase
@@ -60,13 +61,15 @@ class UserListScreen extends HookConsumerWidget {
                 .range(pageToken, pageToken + pageSize);
           }
         }
+
+
         else
         {
-          users = await Constants.supabase
-              .from(SupaTables.user_profile)
-              .select()
-              .range(pageToken, pageToken + pageSize);
+          print("in else ${users}");
+          users = await Constants.supabase.from(SupaTables.user_profile).select().range(pageToken, pageToken + pageSize);
         }
+
+        print("users ${users}");
 
         return PaginationResult.items(elements: [...users], nextPageToken: (users).length < pageSize  ? null : pageToken + pageSize, size: (users as List).length);
       },

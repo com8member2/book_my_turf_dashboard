@@ -1,4 +1,3 @@
-import 'package:book_my_turf_dashboard/features/home/organization/controller/organitation_controller.dart';
 import 'package:book_my_turf_dashboard/routing/app_routes.dart';
 import 'package:book_my_turf_dashboard/shared/widget/shared_small_widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,8 +6,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:paged_datatable/paged_datatable.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../../../../consatant/Constants.dart';
-import '../../../../../utility/utility.dart';
+import '../../../../../../consatant/Constants.dart';
+import '../../../../../../utility/utility.dart';
+import '../controller/organitation_controller.dart';
 
 
 class ConvenienceScreen extends HookConsumerWidget {

@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:book_my_turf_dashboard/consatant/ColorConstant.dart';
 import 'package:book_my_turf_dashboard/routing/app_routes.dart';
+import 'package:book_my_turf_dashboard/routing/go_app_routes.dart';
 import 'package:book_my_turf_dashboard/shared/no_internet_screen.dart';
 import 'package:book_my_turf_dashboard/utility/utility.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -61,10 +62,10 @@ class MyApp extends StatelessWidget {
 
             whenOffline: () => print('no internet'),
             whenOnline: () => print('Connected to internet'),
-            online: MaterialApp(
-          initialRoute: Constants.supabase.auth.currentUser?.id !=null ? AppRoute.rootScreen : AppRoute.loginScreen,
-          //routerConfig: router,
-          routes: AppRoute.routes,
+            online: MaterialApp.router(
+          //initialRoute: Constants.supabase.auth.currentUser?.id !=null ? AppRoute.rootScreen : AppRoute.loginScreen,
+          routerConfig: router,
+          //routes: AppRoute.routes,
           debugShowCheckedModeBanner: false,
           title: 'Book My Turf Dashboard',
           themeMode: isDarkThemVal ? ThemeMode.dark:ThemeMode.light,

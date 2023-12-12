@@ -9,14 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import '../../../consatant/ColorConstant.dart';
 import '../../../shared/widget/common_bottom_align.dart';
 import '../../../shared/widget/custom_button.dart';
 import '../../../shared/widget/shared_small_widgets.dart';
 import '../../../utility/utility.dart';
+import '../../routing/go_app_routes.dart';
 
 
 
@@ -43,7 +44,7 @@ class LoginScreen extends HookConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center, children: [
           Flexible(
-            child: CustomImageView(imagePath: 'assets/images/ground.png',),
+            child: isDarktheme.value ? CustomImageView(imagePath: 'assets/images/splash_dark_logo (1).png',) : CustomImageView(imagePath: "assets/images/splash_light_logo (1).png",),
           ),
           Flexible(
               child: Padding(
@@ -73,17 +74,18 @@ class LoginScreen extends HookConsumerWidget {
                               padding: const EdgeInsets.symmetric(vertical: 20),
                               child: CustomButton('Continue', () async {
 
-                                if(await InternetConnectionChecker().hasConnection){
+
                                   try {
                                     await Constants.supabase.auth.signInWithPassword(password: passwordController.text, email: emailController.text).then(
                                           (value) {
 
                                         var res = value.user;
                                         if(res !=null){
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => RootScreen()));
+                                          context.goNamed(AppRoute.home);
+                                          // Navigator.push(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //         builder: (context) => RootScreen()));
                                           //Navigator.pushNamed(context, AppRoute.rootScreen);
                                         }
                                       },
@@ -92,10 +94,7 @@ class LoginScreen extends HookConsumerWidget {
                                     print(e.toString());
 
                                   }
-                                }
-                                else{
-                                  EasyLoading.showError("Please check your internet connection and try again");
-                                }
+
 
                           }),
                         )
