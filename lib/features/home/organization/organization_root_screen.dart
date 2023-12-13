@@ -35,7 +35,7 @@ class OrganizationRootScreen extends StatelessWidget {
                           context.goNamed(AppRoute.appSettingsScreen);
                         }
                       },
-                      label: Text('App SettingS', style: Theme.of(context).textTheme.titleSmall),
+                      label: Text('App Settings', style: Theme.of(context).textTheme.titleSmall),
                     ),
                     SizedBox(height: 8),
                     ChoiceChip.elevated(

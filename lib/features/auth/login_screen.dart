@@ -44,62 +44,71 @@ class LoginScreen extends HookConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center, children: [
           Flexible(
+            flex: 8,
             child: isDarktheme.value ? CustomImageView(imagePath: 'assets/images/splash_dark_logo (1).png',) : CustomImageView(imagePath: "assets/images/splash_light_logo (1).png",),
           ),
           Flexible(
+            flex: 6,
               child: Padding(
                 padding: const EdgeInsets.all(30),
                 child: Align(
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    width: 450,
-                    child: Form(
-                      key: formKey,
-                      child: AutofillGroup(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 25.0),
-                              child: Text("Login",style: TextStyle(color: CustomColor.primaryGreen,fontSize: 40,fontWeight: FontWeight.w900),),
-                            ),
-                            TextFormFieldWithDottedBorder(context, emailController, "Email"),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 25.0,bottom: 25),
-                              child: TextFormFieldWithDottedBorder(context, passwordController, "Pass"),
-                            ),
+                  alignment: Alignment.centerRight,
+                  child: Form(
+                    key: formKey,
+                    child: AutofillGroup(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 25.0),
+                            child: Text("Login",style: TextStyle(color: CustomColor.primaryGreen,fontSize: 40,fontWeight: FontWeight.w900),),
+                          ),
+                          TextFormFieldWithDottedBorder(context, emailController, "Email",validator: (value) {
+                            if(value!.isEmpty){
+                              return "Email is requered";
+                            }
+                          },),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25.0,bottom: 25),
+                            child: TextFormFieldWithDottedBorder(context, passwordController, "Pass",validator: (value) {
+                              if(value!.isEmpty){
+                                return "Pass is requered";
+                              }
+                            },),
+                          ),
 
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: CustomButton('Continue', () async {
-
-
-                                  try {
-                                    await Constants.supabase.auth.signInWithPassword(password: passwordController.text, email: emailController.text).then(
-                                          (value) {
-
-                                        var res = value.user;
-                                        if(res !=null){
-                                          context.goNamed(AppRoute.home);
-                                          // Navigator.push(
-                                          //     context,
-                                          //     MaterialPageRoute(
-                                          //         builder: (context) => RootScreen()));
-                                          //Navigator.pushNamed(context, AppRoute.rootScreen);
-                                        }
-                                      },
-                                    );
-                                  }  catch (e) {
-                                    print(e.toString());
-
-                                  }
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: CustomButton('Continue', () async {
 
 
-                          }),
-                        )
-                          ],
-                        ),
+                               if(formKey.currentState!.validate()){
+                                 try {
+                                   await Constants.supabase.auth.signInWithPassword(password: passwordController.text, email: emailController.text).then(
+                                         (value) {
+
+                                       var res = value.user;
+                                       if(res !=null){
+                                         context.goNamed(AppRoute.home);
+                                         // Navigator.push(
+                                         //     context,
+                                         //     MaterialPageRoute(
+                                         //         builder: (context) => RootScreen()));
+                                         //Navigator.pushNamed(context, AppRoute.rootScreen);
+                                       }
+                                     },
+                                   );
+                                 }  catch (e) {
+                                   print(e.toString());
+
+                                 }
+                               }
+
+
+                        }),
+                      )
+                        ],
                       ),
                     ),
                   ),

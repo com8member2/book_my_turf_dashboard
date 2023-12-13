@@ -49,9 +49,6 @@ final router = GoRouter(
     if (Constants.supabase.auth.currentSession == null) {
       return '/Login';
     }
-    else{
-      return state.fullPath;
-    }
 
   },
   errorPageBuilder: (context, state) {
@@ -96,10 +93,10 @@ final router = GoRouter(
             builder: (BuildContext context, GoRouterState state) => BookingScreen(),
             routes: [
               GoRoute(
-                path: 'BookingDetails/:id',
+                path: ':id',
                 name: AppRoute.bookingDetailsScreen,
                 builder: (BuildContext context, GoRouterState state) {
-                  print("state. ${state.pathParameters['id']}");
+                  print("state. ${state.pathParameters}");
                   return BookingDetailsScreen(state.pathParameters['id']);
                 },
               )
@@ -117,11 +114,11 @@ final router = GoRouter(
           builder: (BuildContext context,GoRouterState state) => VenueListScreen(),
           routes: [
             GoRoute(
-              path: 'VenueDetails',
+              path: ':id',
               name: AppRoute.venueDetailsScreen,
               builder: (BuildContext context,GoRouterState state) {
-                print("state.uri.queryParameters ${state.extra}");
-                return VenueDetails(state.extra as VenueEntity);
+                print("state.uri.queryParameters ${state.pathParameters}");
+                return VenueDetails(state.pathParameters['id']);
               },
 
             ),

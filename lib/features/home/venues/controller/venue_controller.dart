@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:book_my_turf_dashboard/model/venue_entity.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../consatant/Constants.dart';
@@ -60,4 +61,14 @@ class venueCitySearchValue extends _$venueCitySearchValue {
     ref.keepAlive();
     return '';
   }
+}
+
+@riverpod
+Future<VenueEntity> getVenueDetails(GetVenueDetailsRef ref, id) async {
+
+  List list = await Constants.supabase
+      .from(SupaTables.venue_list)
+      .select().eq('id', id);
+
+  return VenueEntity.fromJson(list[0]);
 }

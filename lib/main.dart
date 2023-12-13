@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_no_internet_widget/flutter_no_internet_widget.dart';
 import 'package:hive/hive.dart';
-
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paged_datatable/l10n/generated/l10n.dart';
@@ -49,25 +49,52 @@ Future<void> main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends HookConsumerWidget {
   const MyApp({super.key});
 
+
+
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,ref) {
+
+    useEffect(() {
+
+      getSharedPreference().then(
+            (value) {
+
+          print("isDarktheme.value 11111 ${value.getBool(PrefKeys.isDarkTheme)}");
+
+
+          if(value.getBool(PrefKeys.isDarkTheme)==null){
+            isDarktheme.value = WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;
+          }
+          else{
+            isDarktheme.value = value.getBool(PrefKeys.isDarkTheme,)!;
+          }
+        },
+      );
+
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+
+      });
+
+      print("isDarktheme.value ${isDarktheme.value}");
+
+      EasyLoading.instance.maskType = EasyLoadingMaskType.black;
+      EasyLoading.instance.indicatorType = EasyLoadingIndicatorType.pulse;
+      return null;
+    });
+
     return ValueListenableBuilder(
       valueListenable: isDarktheme,
       builder: (context, isDarkThemVal, child) {
-        return InternetWidget(
-            offline: FullScreenWidget(child: NoInternetScreen()),
-
-            whenOffline: () => print('no internet'),
-            whenOnline: () => print('Connected to internet'),
-            online: MaterialApp.router(
+        return MaterialApp.router(
           //initialRoute: Constants.supabase.auth.currentUser?.id !=null ? AppRoute.rootScreen : AppRoute.loginScreen,
           routerConfig: router,
           //routes: AppRoute.routes,
           debugShowCheckedModeBanner: false,
-          title: 'Book My Turf Dashboard',
+          title: 'Book For Sport Dashboard',
           themeMode: isDarkThemVal ? ThemeMode.dark:ThemeMode.light,
           localizationsDelegates: [PagedDataTableLocalization.delegate],
           builder: EasyLoading.init(
@@ -76,7 +103,7 @@ class MyApp extends StatelessWidget {
           ),
           darkTheme: FlexThemeData.dark(useMaterial3: true, scheme: FlexScheme.green),
           theme: FlexThemeData.light(useMaterial3: true, scheme: FlexScheme.greenM3,primary: CustomColor.primaryGreen),
-        ));
+        );
       },
     );
   }

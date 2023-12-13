@@ -102,7 +102,7 @@ class RootScreen extends HookConsumerWidget {
           icon: CustomImageView(imagePath: 'assets/images/org.png',height: 22,width: 22,), subItems: [
           DashboardItem(
             builder: (parameters) =>  SettingsScreen(),
-            label: 'App Settings',
+            label: 'App Setting',
             id: 'settings',
             icon: Icon(
               Icons.settings,

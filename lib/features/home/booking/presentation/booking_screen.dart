@@ -111,7 +111,7 @@ class BookingScreen extends HookConsumerWidget {
 
                 print("mapmapmapmapmapmap ${map['id']}");
                 context.goNamed(AppRoute.bookingDetailsScreen,
-                    pathParameters: {'id' : map['id'].toString()});
+                    pathParameters: {'id' :map['id'].toString()});
               },
               icon: Icon(Icons.edit_note_rounded)),
         ),

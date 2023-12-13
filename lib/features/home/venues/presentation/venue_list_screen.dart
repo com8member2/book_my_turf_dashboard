@@ -21,7 +21,8 @@ class VenueListScreen extends HookConsumerWidget {
 
   VenueListScreen({super.key});
 
-  var controller;
+  final controller = PagedDataTableController<int, Map<dynamic, dynamic>>();
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,9 +35,7 @@ class VenueListScreen extends HookConsumerWidget {
     var cityController = useTextEditingController();
     var selectedCityList = useState([]);
 
-    useEffect(() {
-      controller = PagedDataTableController<int, Map<dynamic, dynamic>>();
-    },);
+
 
     return cities.when(data: (cityList) {
 
@@ -109,7 +108,6 @@ class VenueListScreen extends HookConsumerWidget {
                       ref.read(venueCitySearchValueProvider.notifier).state = selectedCityList.value[index];
                       cityController.text = selectedCityList.value[index];
                       controller.refresh();
-                      print("vjnvufio ${ref.read(venueCitySearchValueProvider)}");
                     },);
                   },
                 ),
@@ -261,7 +259,7 @@ class VenueListScreen extends HookConsumerWidget {
 
 
                   print("VenueEntity.fromJson ${VenueEntity.fromJson( Map<String, dynamic>.from(p0),).toJson()}");
-                  context.goNamed(AppRoute.venueDetailsScreen,extra: VenueEntity.fromJson(Map<String, dynamic>.from(p0)));
+                  context.goNamed(AppRoute.venueDetailsScreen,pathParameters: {'id' : p0['id'].toString()});
                 },
                 icon: Icon(Icons.edit_note_rounded)),
           ),

@@ -76,7 +76,7 @@ class UserListScreen extends HookConsumerWidget {
       initialPage: 0,
       header: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: TextFormFieldWithDottedBorder(context, txtController, "Search",onChanged: (p0) async {
+        child: TextFormFieldWithDottedBorder(context, txtController, "Search by user name",onChanged: (p0) async {
 
           ref.read(userSearchValueProvider.notifier).state = p0;
           controller.refresh();

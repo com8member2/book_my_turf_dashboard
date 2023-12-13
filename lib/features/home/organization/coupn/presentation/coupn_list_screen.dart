@@ -66,9 +66,9 @@ class CouponListScreen extends HookConsumerWidget {
         borderRadius: 12,
         selectedIndex: pageIndex.value,
         selectedBackgroundColors: [Theme.of(context).buttonTheme.colorScheme!.primary],
-        unSelectedBackgroundColors: [Theme.of(context).cardColor],
-        selectedTextStyle:  TextStyle(color: Colors.white, fontSize: 14),
-        unSelectedTextStyle: TextStyle(color: Colors.black, fontSize: 14),
+        unSelectedBackgroundColors: [Theme.of(context).colorScheme.primary.withOpacity(0.2)],
+        // selectedTextStyle:  TextStyle(color: Colors.white, fontSize: 14),
+        // unSelectedTextStyle: TextStyle(color: Colors.black, fontSize: 14),
         labels: ['All Coupon', 'Add Coupon'],
         selectedLabelIndex: (index) {
           // pageIndex.value = index;

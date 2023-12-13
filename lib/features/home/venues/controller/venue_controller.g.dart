@@ -310,6 +310,135 @@ final getAllVenuesProvider = AutoDisposeFutureProvider<List>.internal(
 );
 
 typedef GetAllVenuesRef = AutoDisposeFutureProviderRef<List>;
+String _$getVenueDetailsHash() => r'0bfc9044da1a30006771f973326fddc493d56539';
+
+/// See also [getVenueDetails].
+@ProviderFor(getVenueDetails)
+const getVenueDetailsProvider = GetVenueDetailsFamily();
+
+/// See also [getVenueDetails].
+class GetVenueDetailsFamily extends Family<AsyncValue<VenueEntity>> {
+  /// See also [getVenueDetails].
+  const GetVenueDetailsFamily();
+
+  /// See also [getVenueDetails].
+  GetVenueDetailsProvider call(
+    dynamic id,
+  ) {
+    return GetVenueDetailsProvider(
+      id,
+    );
+  }
+
+  @override
+  GetVenueDetailsProvider getProviderOverride(
+    covariant GetVenueDetailsProvider provider,
+  ) {
+    return call(
+      provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getVenueDetailsProvider';
+}
+
+/// See also [getVenueDetails].
+class GetVenueDetailsProvider extends AutoDisposeFutureProvider<VenueEntity> {
+  /// See also [getVenueDetails].
+  GetVenueDetailsProvider(
+    dynamic id,
+  ) : this._internal(
+          (ref) => getVenueDetails(
+            ref as GetVenueDetailsRef,
+            id,
+          ),
+          from: getVenueDetailsProvider,
+          name: r'getVenueDetailsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getVenueDetailsHash,
+          dependencies: GetVenueDetailsFamily._dependencies,
+          allTransitiveDependencies:
+              GetVenueDetailsFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  GetVenueDetailsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
+  final dynamic id;
+
+  @override
+  Override overrideWith(
+    FutureOr<VenueEntity> Function(GetVenueDetailsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetVenueDetailsProvider._internal(
+        (ref) => create(ref as GetVenueDetailsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<VenueEntity> createElement() {
+    return _GetVenueDetailsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetVenueDetailsProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetVenueDetailsRef on AutoDisposeFutureProviderRef<VenueEntity> {
+  /// The parameter `id` of this provider.
+  dynamic get id;
+}
+
+class _GetVenueDetailsProviderElement
+    extends AutoDisposeFutureProviderElement<VenueEntity>
+    with GetVenueDetailsRef {
+  _GetVenueDetailsProviderElement(super.provider);
+
+  @override
+  dynamic get id => (origin as GetVenueDetailsProvider).id;
+}
+
 String _$venueSearchValueHash() => r'b850be65a1488b46dcc9b3aab2502521920b4c49';
 
 /// See also [venueSearchValue].
