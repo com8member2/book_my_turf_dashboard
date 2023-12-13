@@ -57,14 +57,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  beamer:
-    dependency: "direct main"
-    description:
-      name: beamer
-      sha256: "1bd43904b62f322eb40aaa47aac463d7d6dd300cdfb8c71401105362c4501f43"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.5.6"
   bloc:
     dependency: transitive
     description:
@@ -661,6 +653,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  go_router:
+    dependency: "direct main"
+    description:
+      name: go_router
+      sha256: e1a30a66d734f9e498b1b6522d6a75ded28242bad2359a9158df38a1c30bcf1f
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.2.0"
   gotrue:
     dependency: transitive
     description:

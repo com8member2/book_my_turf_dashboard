@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:beamer/beamer.dart';
 import 'package:book_my_turf_dashboard/features/home/venues/presentation/venue_details_screen.dart';
 import 'package:book_my_turf_dashboard/routing/go_app_routes.dart';
 import 'package:book_my_turf_dashboard/utility/utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paged_datatable/paged_datatable.dart';
 import '../../../../consatant/ColorConstant.dart';
@@ -14,7 +14,6 @@ import '../../../../consatant/Constants.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../../model/venue_entity.dart';
-import '../../../../routing/app_routes.dart';
 import '../../../../shared/widget/shared_small_widgets.dart';
 import '../controller/venue_controller.dart';
 
@@ -262,8 +261,7 @@ class VenueListScreen extends HookConsumerWidget {
 
 
                   print("VenueEntity.fromJson ${VenueEntity.fromJson( Map<String, dynamic>.from(p0),).toJson()}");
-
-                  context.beamToNamed("${AppRoute.venueDetailsScreen}/${p0['id']}");
+                  context.goNamed(AppRoute.venueDetailsScreen,extra: VenueEntity.fromJson(Map<String, dynamic>.from(p0)));
                 },
                 icon: Icon(Icons.edit_note_rounded)),
           ),

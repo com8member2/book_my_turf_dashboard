@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:beamer/beamer.dart';
 import 'package:book_my_turf_dashboard/features/home/booking/controller/booking_controller.dart';
 import 'package:book_my_turf_dashboard/features/home/booking/presentation/booking_details_screen.dart';
 import 'package:book_my_turf_dashboard/features/home/venues/presentation/venue_details_screen.dart';
@@ -9,6 +8,7 @@ import 'package:book_my_turf_dashboard/model/booking_entity.dart';
 import 'package:book_my_turf_dashboard/utility/utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:paged_datatable/paged_datatable.dart';
 import '../../../../consatant/ColorConstant.dart';
@@ -16,7 +16,6 @@ import '../../../../consatant/Constants.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../../model/venue_entity.dart';
-import '../../../../routing/app_routes.dart';
 import '../../../../routing/go_app_routes.dart';
 import '../../../../shared/widget/shared_small_widgets.dart';
 
@@ -111,7 +110,8 @@ class BookingScreen extends HookConsumerWidget {
                 print("in booking screen ${map.map((key, value) => MapEntry(key.toString(), value.toString()))}");
 
                 print("mapmapmapmapmapmap ${map['id']}");
-                context.beamToNamed(AppRoute.bookingDetailsScreen,);
+                context.goNamed(AppRoute.bookingDetailsScreen,
+                    pathParameters: {'id' : map['id'].toString()});
               },
               icon: Icon(Icons.edit_note_rounded)),
         ),

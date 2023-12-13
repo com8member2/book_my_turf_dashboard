@@ -1,7 +1,6 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../../routing/app_routes.dart';
 import '../../../routing/go_app_routes.dart';
 
 class OrganizationRootScreen extends StatelessWidget {
@@ -33,7 +32,7 @@ class OrganizationRootScreen extends StatelessWidget {
                       selected: path == '/Organization',
                       onSelected: (value) {
                         if (value) {
-                          context.beamToNamed(AppRoute.appSettingsScreen);
+                          context.goNamed(AppRoute.appSettingsScreen);
                         }
                       },
                       label: Text('App SettingS', style: Theme.of(context).textTheme.titleSmall),
@@ -45,7 +44,7 @@ class OrganizationRootScreen extends StatelessWidget {
                       selected: path == '/ConvenienceFeesScreen',
                       onSelected: (value) {
                         if (value) {
-                          context.beamToNamed(AppRoute.convenienceFeesScreen);
+                          context.goNamed(AppRoute.convenienceFeesScreen);
                         }
                       },
                       label: const Text('Convenience fees '),
@@ -58,7 +57,7 @@ class OrganizationRootScreen extends StatelessWidget {
                       selected: path == '/CouponListScreen',
                       onSelected: (value) {
                         if (value) {
-                          context.beamToNamed(AppRoute.couponListScreen);
+                          context.goNamed(AppRoute.couponListScreen);
                         }
                       },
                       label: Text('Coupon ', style: Theme.of(context).textTheme.titleSmall),

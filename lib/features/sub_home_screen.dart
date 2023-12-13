@@ -1,110 +1,160 @@
-import 'package:beamer/beamer.dart';
-import 'package:book_my_turf_dashboard/location.dart';
-import 'package:book_my_turf_dashboard/shared/widget/custom_image_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../btn.dart';
-
-class SubHome extends HookConsumerWidget {
+import 'package:go_router/go_router.dart';
 
 
+import '../../../routing/app_routes.dart';
+import '../../../shared/widget/common_switch_for_change_theme.dart';
+import '../consatant/Constants.dart';
+import '../routing/go_app_routes.dart';
+import '../shared/widget/custom_image_view.dart';
+import '../utility/utility.dart';
 
-  SubHome();
+class SubHomeScreen extends StatefulWidget {
+  final Widget child;
+  final String path;
 
-  final _beamerKey = GlobalKey<BeamerState>();
+  const SubHomeScreen({super.key, required this.child, required this.path});
 
   @override
-  Widget build(BuildContext context,ref) {
+  State<SubHomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<SubHomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: CustomImageView(imagePath: "assets/images/splash_dark_logo (1).png",height: 250,),
-        ),
-      ),
-      body: Row(
-        children: [
-          Container(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-            padding: const EdgeInsets.all(25.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                MenuButton(
-                  beamer: _beamerKey,
-                  uri: '/home',
-                  child: Text('Home'),
+      body: Row(children: [
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: SizedBox(
+              width: 150,
+              child: Theme(
+                data: Theme.of(context).copyWith(chipTheme: ChipThemeData(
+                        selectedColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
+                        labelStyle: Theme.of(context).textTheme.titleMedium)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomImageView(imagePath: isDarktheme.value ? 'assets/images/splash_dark_logo (1).png' : "assets/images/splash_light_logo (1).png",),
+                    ChoiceChip.elevated(
+                      showCheckmark: false,
+                      avatar: Icon(Icons.space_dashboard_rounded, color: Theme.of(context).colorScheme.primary, size: 23),
+                      selected: widget.path == '/Home',
+                      onSelected: (value) {
+                        if (value) {
+                          context.goNamed(AppRoute.home);
+                        }
+                      },
+                      label: Text('Home'),
+                    ),
+                    Padding(
+                      padding:  EdgeInsets.symmetric(vertical: 8.0),
+                      child: ChoiceChip.elevated(
+                        showCheckmark: false,
+                        avatar: Icon(Icons.self_improvement_rounded, color: Theme.of(context).colorScheme.primary, size: 23),
+                        selectedColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
+                        selected: widget.path.contains('/Users'),
+                        onSelected: (value) {
+                          print("do mkmsd ---- ${value}");
+                          if (value) {
+                            context.goNamed(AppRoute.userListScreen);
+                          }
+                        },
+                        label: Text('Users'),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: ChoiceChip.elevated(
+                        showCheckmark: false,
+                        avatar: Icon(Icons.book, color: Theme.of(context).colorScheme.primary, size: 23),
+                        selectedColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
+                        selected: widget.path.contains('/Bookings'),
+                        onSelected: (value) {
+                          if (value) {
+                            context.goNamed(AppRoute.bookingsListScreen);
+                          }
+                        },
+                        label: Text('Booking'),
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: ChoiceChip.elevated(
+                        showCheckmark: false,
+                        avatar: Icon(Icons.group, color: Theme.of(context).colorScheme.primary, size: 23),
+                        selectedColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
+                        selected: widget.path.contains('/Owners'),
+                        onSelected: (value) {
+                          if (value) {
+                            context.goNamed(AppRoute.ownerListScreen);
+                          }
+                        },
+                        label: Text('Owners'),
+                      ),
+                    ),
+                    ChoiceChip.elevated(
+                      showCheckmark: false,
+                      avatar: Icon(Icons.group_work_rounded, color: Theme.of(context).colorScheme.primary, size: 23),
+                      selectedColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
+                      selected: widget.path.contains('/Venues'),
+                      onSelected: (value) {
+                        if (value) {
+                          context.goNamed(AppRoute.venueListScreen);
+                        }
+                      },
+                      label: Text('Venues'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: ChoiceChip.elevated(
+                        showCheckmark: false,
+                        avatar: Icon(Icons.people_alt_rounded, color: Theme.of(context).colorScheme.primary, size: 23),
+                        selectedColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
+                        selected: widget.path.contains('/Organization'),
+                        onSelected: (value) {
+                          if (value) {
+                            context.goNamed(AppRoute.appSettingsScreen);
+                          }
+                        },
+                        label: Text('Organization'),
+                      ),
+                    ),
+
+                    Spacer(),
+                    ActionChip(
+                      label: Text('Log Out'),
+                      onPressed: () {
+                        showConfirmationDialog(
+                          context,
+                          'Are you sure want to Logout?',
+                              () {
+                            Constants.supabase.auth.signOut().then(
+                                  (value) {
+                                context.go(AppRoute.login);
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
+
+                  ],
                 ),
-                SizedBox(height: 16.0),
-                MenuButton(
-                  beamer: _beamerKey,
-                  uri: '/bookings',
-                  child: Text('Bookings'),
-                ),
-                SizedBox(height: 16.0),
-                MenuButton(
-                  beamer: _beamerKey,
-                  uri: '/venueList',
-                  child: Text('Venue'),
-                ),
-                SizedBox(height: 16.0),
-                MenuButton(
-                  beamer: _beamerKey,
-                  uri: '/ownerList',
-                  child: Text('Owner'),
-                ),
-                SizedBox(height: 16.0),
-                MenuButton(
-                  beamer: _beamerKey,
-                  uri: '/userList',
-                  child: Text('Users'),
-                ),
-                Spacer(),
-                MenuButton(
-                  beamer: _beamerKey,
-                  uri: '/logOut',
-                  child: Text('logOut'),
-                ),
-              ],
+              ),
             ),
           ),
-          Container(width: 1, color: Theme.of(context).colorScheme.primary.withOpacity(0.1),),
-          if ((context.currentBeamLocation.state as BeamState).uri.path.isEmpty)
-            Expanded(
-              child: Container(
-                child: Center(
-                  child: Text('Home second'),
-                ),
-              ),
-            )
-          else
-            Expanded(
-              child: ClipRRect(
-                child: Beamer(
-                  key: _beamerKey,
-                  routerDelegate: BeamerDelegate(
-                    transitionDelegate: const NoAnimationTransitionDelegate(),
-                    locationBuilder: (routeInformation, _) {
-
-                      print("routeInformation ${routeInformation.uri.path}");
-                      return routeInformation.location!.contains('home')
-                          ? HomeLocation(routeInformation)
-                          : routeInformation.location!.contains('venueList')
-                              ? VenueListLocation(routeInformation)
-                              : routeInformation.location.contains('ownerList')
-                                  ? OwnerListLocation(routeInformation)
-                                  : routeInformation.location.contains('userList')
-                                      ? UserListLocation(routeInformation)
-                                      : BookingsLocation(routeInformation);
-                    },
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
+        ),
+        Expanded(child: widget.child)
+      ]),
     );
   }
+
 }
