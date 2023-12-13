@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:beamer/beamer.dart';
 import 'package:book_my_turf_dashboard/consatant/ColorConstant.dart';
 import 'package:book_my_turf_dashboard/routing/app_routes.dart';
 import 'package:book_my_turf_dashboard/routing/go_app_routes.dart';
@@ -21,6 +22,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 
 import 'consatant/Constants.dart';
+import 'location.dart';
+
 
 
 
@@ -44,13 +47,21 @@ Future<void> main() async {
     anonKey:
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrbm9tdGZtcWx3b3Jkbmhuc2ptIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODk3NzEyNjUsImV4cCI6MjAwNTM0NzI2NX0.0S3Ct4aWX7ZuNU_KLIgOMmeSYzbNeNF1gfsXf1mNsVM",
   );
-   runApp(const ProviderScope(
+   runApp( ProviderScope(
     child: MyApp(),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+
+  final routerDelegate = BeamerDelegate(
+    transitionDelegate: const DefaultTransitionDelegate(),
+    onPopPage: (context, route, result) {
+      print("onpopopoppop ${route}---${result}");
+      return true;
+    },
+    locationBuilder: (routeInformation, _) => Constants.supabase.auth.currentSession == null ? LoginLocation(routeInformation): HomeLocation(routeInformation),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +74,15 @@ class MyApp extends StatelessWidget {
             whenOffline: () => print('no internet'),
             whenOnline: () => print('Connected to internet'),
             online: MaterialApp.router(
+
+
+              routerDelegate: routerDelegate,
+              routeInformationParser: BeamerParser(),
+              backButtonDispatcher:
+              BeamerBackButtonDispatcher(delegate: routerDelegate),
+
           //initialRoute: Constants.supabase.auth.currentUser?.id !=null ? AppRoute.rootScreen : AppRoute.loginScreen,
-          routerConfig: router,
+          //routerConfig: router,
           //routes: AppRoute.routes,
           debugShowCheckedModeBanner: false,
           title: 'Book My Turf Dashboard',
@@ -76,7 +94,8 @@ class MyApp extends StatelessWidget {
           ),
           darkTheme: FlexThemeData.dark(useMaterial3: true, scheme: FlexScheme.green),
           theme: FlexThemeData.light(useMaterial3: true, scheme: FlexScheme.greenM3,primary: CustomColor.primaryGreen),
-        ));
+        )
+        );
       },
     );
   }
