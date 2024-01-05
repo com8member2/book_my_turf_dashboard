@@ -6,7 +6,7 @@ part of 'owner_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getAllOwnersHash() => r'1b570a1c5e19e30cf9ea75e061a5ebb347df0e7a';
+String _$getAllOwnersHash() => r'6c8d9df2dbef97fc24a61a2da12a80c957936fda';
 
 /// See also [getAllOwners].
 @ProviderFor(getAllOwners)

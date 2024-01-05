@@ -21,22 +21,9 @@ Future<List> getStaff(GetStaffRef ref,id) async {
       .eq("venue_id", id);
 
   List list = await Constants.supabase.from(SupaTables.owner_role).select("*,role(role_name,id),${SupaTables.owner_profile}(name,phone,email)").
-  in_('owner_id', venueIDs.map((e) => e['owner_id'],).toList());
+  in_('owner_id', venueIDs.map((e) => e['owner_id'],).toList()).is_('${SupaTables.owner_profile}.deletaed_at', null);
 
   return list;
-}
-
-
-@riverpod
-Future<List> getAllVenuesCity(GetAllVenuesCityRef ref)  async {
-  var cities;
-  List list =  await Constants.supabase.from(SupaTables.city).select('name').eq('country_id', 101);
-   cities = list.map((e) =>  e['name']).toSet().toList();
-  //log('all cities ${cities}');
-  // List list =  await Constants.supabase.from(SupaTables.venue_list).select('city');
-  // cities = list.map((e) =>  e['city']).toSet().toList();
-  // print("city set ${cities}");
-  return cities;
 }
 
 @riverpod

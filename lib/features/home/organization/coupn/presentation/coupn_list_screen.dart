@@ -22,9 +22,6 @@ import '../../../../../shared/widget/custom_button.dart';
 import '../../../../../shared/widget/shared_small_widgets.dart';
 import '../../../../../utility/utility.dart';
 
-
-
-
 class CouponListScreen extends HookConsumerWidget {
   const CouponListScreen();
 
@@ -39,7 +36,7 @@ class CouponListScreen extends HookConsumerWidget {
     useEffect(() {
       Future.delayed(
         Duration(milliseconds: 1),
-            () {
+        () {
           if (editItem.value != null) {
             pageController.animateToPage(1, duration: Duration(milliseconds: 250), curve: Curves.linear);
           }
@@ -67,31 +64,28 @@ class CouponListScreen extends HookConsumerWidget {
         selectedIndex: pageIndex.value,
         selectedBackgroundColors: [Theme.of(context).buttonTheme.colorScheme!.primary],
         unSelectedBackgroundColors: [Theme.of(context).colorScheme.primary.withOpacity(0.2)],
-        // selectedTextStyle:  TextStyle(color: Colors.white, fontSize: 14),
-        // unSelectedTextStyle: TextStyle(color: Colors.black, fontSize: 14),
         labels: ['All Coupon', 'Add Coupon'],
         selectedLabelIndex: (index) {
-          // pageIndex.value = index;
           pageController.animateToPage(index, duration: Duration(milliseconds: 250), curve: Curves.linear);
         },
         isScroll: false,
       ),
       Expanded(
           child: PageView(
-            onPageChanged: (value) {
-              pageIndex.value = value;
-              if (value == 0) {
-                formKey.currentState?.reset();
-                editItem.value = null;
-              }
-            },
-            controller: pageController,
-            children: [
-              AllCouponScreen(editItem,pageController),
-              AddCoupon(editItem.value, formKey, pageController)
-              // ResponsiveDataTable(dataTable: DataTableOptions(headers: headers, buildItem: buildItem), controller: controller),
-            ],
-          ))
+        onPageChanged: (value) {
+          pageIndex.value = value;
+          if (value == 0) {
+            formKey.currentState?.reset();
+            editItem.value = null;
+          }
+        },
+        controller: pageController,
+        children: [
+          AllCouponScreen(editItem, pageController),
+          AddCoupon(editItem.value, formKey, pageController)
+          // ResponsiveDataTable(dataTable: DataTableOptions(headers: headers, buildItem: buildItem), controller: controller),
+        ],
+      ))
     ]);
   }
 }
@@ -105,38 +99,24 @@ class AddCoupon extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     print("editItem editItem editItem ${editItem}");
 
-    final selectedDiscountUnit = useState(editItem!=null ? editItem['discount_unit'] : 'PERCENTAGE');
-    final couponType = useState(editItem!=null && editItem['venue_id'] !=null ? 'For Venue': 'Global');
-    var selectedVenueName = useState('');
+    final selectedDiscountUnit = useState(editItem != null ? editItem['discount_unit'] : 'PERCENTAGE');
+    final couponType = useState(editItem != null && editItem['venue_id'] != null ? 'For Venue' : 'Global');
 
     var venueList = ref.watch(getAllVenuesProvider);
 
     final isShowVenue = useState(false);
 
-    final titleController = useTextEditingController(text: editItem!=null ? editItem['title'] : null);
-    final desController = useTextEditingController(text: editItem!=null ? editItem['description'] : null);
-    final disValueController = useTextEditingController(text: editItem!=null ? editItem['discount_value'].toString() : null);
-    final couponCodeController = useTextEditingController(text: editItem!=null ? editItem['coupon_code'] : null);
+    final titleController = useTextEditingController(text: editItem != null ? editItem['title'] : null);
+    final desController = useTextEditingController(text: editItem != null ? editItem['description'] : null);
+    final disValueController = useTextEditingController(text: editItem != null ? editItem['discount_value'].toString() : null);
+    final couponCodeController = useTextEditingController(text: editItem != null ? editItem['coupon_code'] : null);
     final venueListController = useTextEditingController();
-    final fromDateController = useTextEditingController(text: editItem!=null ? editItem['valid_from'] : null);
-    final toDateController = useTextEditingController(text: editItem!=null ? editItem['valid_until'] : null);
-    final maxCouponLimitController = useTextEditingController(text: editItem!=null ? editItem['maximum_coupon_usage'].toString() : null);
-    final maxDisAmountController = useTextEditingController(text: editItem!=null ? editItem['maximum_discount_amount'].toString() : null);
-    // useEffect(() {
-    //
-    //   isGlobalController.addListener(() {
-    //     if (isGlobalController.text == "") {
-    //       isTip.value = false;
-    //     } else if (isGlobalController.text == "Nutrition Tips") {
-    //       isTip.value = true;
-    //     }
-    //   });
-    //   return () {
-    //   };
-    // }, []);
+    final fromDateController = useTextEditingController(text: editItem != null ? editItem['valid_from'] : null);
+    final toDateController = useTextEditingController(text: editItem != null ? editItem['valid_until'] : null);
+    final maxCouponLimitController = useTextEditingController(text: editItem != null ? editItem['maximum_coupon_usage'].toString() : null);
+    final maxDisAmountController = useTextEditingController(text: editItem != null ? editItem['maximum_discount_amount'].toString() : null);
     return SingleChildScrollView(
       child: Align(
         alignment: Alignment.topCenter,
@@ -175,10 +155,9 @@ class AddCoupon extends HookConsumerWidget {
                       return null;
                     },
                   ),
-                  Text("Select Coupon Type" ,style: Theme.of(context).textTheme.titleMedium),
-
+                  Text("Select Coupon Type", style: Theme.of(context).textTheme.titleMedium),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 25.0,top: 15),
+                    padding: const EdgeInsets.only(bottom: 25.0, top: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -208,21 +187,22 @@ class AddCoupon extends HookConsumerWidget {
                       ],
                     ),
                   ),
+                  if (isShowVenue.value == true)
+                    venueList.when(
+                      data: (venueList) {
+                        List<String> venueName = venueList.map((e) => e['venue_name'].toString()).toList();
 
-                  if(isShowVenue.value == true)
-                    venueList.when(data: (venueList) {
-
-                      List<String> venueName = venueList.map((e) => e['venue_name'].toString()).toList();
-
-                      return DropdownWithLabel(
-                        selectedItem: venueListController.text,
-                        controller: venueListController,
-                        itemsList: venueName,
-                        hintText: 'Coupon Type',
-                        lable: 'Select Coupon Type ',
-                      );
-                    }, error: (error, stackTrace) => Text(error.toString()), loading: () => SizedBox(),),
-
+                        return DropdownWithLabel(
+                          selectedItem: venueListController.text,
+                          controller: venueListController,
+                          itemsList: venueName,
+                          hintText: 'Coupon Type',
+                          lable: 'Select Coupon Type ',
+                        );
+                      },
+                      error: (error, stackTrace) => Text(error.toString()),
+                      loading: () => SizedBox(),
+                    ),
                   TextFieldWithLable(
                     lable: 'Coupon Code',
                     hint: 'Coupon Code',
@@ -240,9 +220,7 @@ class AddCoupon extends HookConsumerWidget {
                     lable: 'Discount Value',
                     hint: 'Discount Value',
                     keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     controller: disValueController,
                     isColorBorder: true,
                     validator: (value) {
@@ -252,14 +230,12 @@ class AddCoupon extends HookConsumerWidget {
                       return null;
                     },
                   ),
-
                   Padding(
                     padding: const EdgeInsets.only(top: 25.0),
-                    child: Text("Select Discount Unit" ,style: Theme.of(context).textTheme.titleMedium),
+                    child: Text("Select Discount Unit", style: Theme.of(context).textTheme.titleMedium),
                   ),
-
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 25.0,top: 15),
+                    padding: const EdgeInsets.only(bottom: 25.0, top: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -283,25 +259,23 @@ class AddCoupon extends HookConsumerWidget {
                       ],
                     ),
                   ),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Expanded(
                           child: Divider(
-                            thickness: 0.5,
-                          )),
+                        thickness: 0.5,
+                      )),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text("Optional"),
                       ),
                       const Expanded(
                           child: Divider(
-                            thickness: 0.5,
-                          ))
+                        thickness: 0.5,
+                      ))
                     ],
                   ),
-
                   TextFieldWithLable(
                     lable: 'Valid From',
                     hint: 'Select from date',
@@ -309,10 +283,7 @@ class AddCoupon extends HookConsumerWidget {
                     controller: fromDateController,
                     onTap: () async {
                       final DateTime? selectedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime.now().add(Duration(days: 365 * 50)));
+                          context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime.now().add(Duration(days: 365 * 50)));
                       if (selectedDate != null) {
                         final DateFormat formatter = DateFormat('yyyy-MM-dd');
                         final String formattedDate = formatter.format(selectedDate);
@@ -342,82 +313,62 @@ class AddCoupon extends HookConsumerWidget {
                     },
                     isColorBorder: true,
                   ),
-
                   TextFieldWithLable(
                     lable: 'Maximum Coupon Usage Limit',
                     hint: 'Maximum Coupon Usage Limit',
                     controller: maxCouponLimitController,
                     keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     isColorBorder: true,
                   ),
-
-
-
-
-                  if(selectedDiscountUnit.value=='PERCENTAGE')
-                  TextFieldWithLable(
-                    lable: 'Maximum Discount Amount',
-                    hint: 'Maximum Discount Amount',
-                    keyboardType: TextInputType.number,
-                    controller: maxDisAmountController,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    isColorBorder: true,
-                  ),
-
-
+                  if (selectedDiscountUnit.value == 'PERCENTAGE')
+                    TextFieldWithLable(
+                      lable: 'Maximum Discount Amount',
+                      hint: 'Maximum Discount Amount',
+                      keyboardType: TextInputType.number,
+                      controller: maxDisAmountController,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      isColorBorder: true,
+                    ),
                   SizedBox(height: 50),
-                  CustomButton(editItem!=null ? 'Update Coupon':'Save Coupon', () async {
+                  CustomButton(editItem != null ? 'Update Coupon' : 'Save Coupon', () async {
+                    if (editItem != null) {
+                      int? venueId;
+                      if (venueListController.text.isNotEmpty) {
+                        var res = venueList.value?.firstWhere((element) => element['venue_name'] == venueListController.text);
+                        venueId = res['id'];
+                      }
 
-                    if(editItem !=null){
-                      int? venueId ;
-                        if(venueListController.text.isNotEmpty)
-                        {
-                          var res =venueList.value?.firstWhere((element) => element['venue_name']==venueListController.text);
-                          venueId = res['id'];
-                        }
-                        // if(DateTime.parse(fromDateController.text.isNotEmpty ? fromDateController.text : "").isBefore(DateTime.parse(toDateController.text.isNotEmpty ? toDateController.text :""))){
-                        //
-                        // }
-
-                        await Constants.supabase.from(SupaTables.coupons).update({
-                          'venue_id' : venueId ?? null,
-                          'discount_value' : disValueController.text,
-                          'discount_unit' : selectedDiscountUnit.value,
-                          'valid_from' : fromDateController.text.isNotEmpty ? fromDateController.text : null,
-                          'valid_until' : toDateController.text.isNotEmpty ? toDateController.text : null,
-                          'coupon_code' : couponCodeController.text,
-                          'maximum_discount_amount' : maxDisAmountController.text.isNotEmpty ? maxDisAmountController.text : null,
-                          'maximum_coupon_usage' : maxCouponLimitController.text.isNotEmpty ? maxCouponLimitController.text : null,
-                          'is_global' : couponType.value == "Global",
-                          'title' : titleController.text,
-                          'description' : desController.text
-                        }).match({'id' : editItem['id']}).then((value) {
+                      await Constants.supabase.from(SupaTables.coupons).update({
+                        'venue_id': venueId ?? null,
+                        'discount_value': disValueController.text,
+                        'discount_unit': selectedDiscountUnit.value,
+                        'valid_from': fromDateController.text.isNotEmpty ? fromDateController.text : null,
+                        'valid_until': toDateController.text.isNotEmpty ? toDateController.text : null,
+                        'coupon_code': couponCodeController.text,
+                        'maximum_discount_amount': maxDisAmountController.text.isNotEmpty ? maxDisAmountController.text : null,
+                        'maximum_coupon_usage': maxCouponLimitController.text.isNotEmpty ? maxCouponLimitController.text : null,
+                        'is_global': couponType.value == "Global",
+                        'title': titleController.text,
+                        'description': desController.text
+                      }).match({'id': editItem['id']}).then(
+                        (value) {
                           pageController.jumpToPage(0);
-                        },).onError((error, stackTrace) {
-
-                          if(error is PostgrestException){
-                            final postgrestError = error as PostgrestException;
-                            if(postgrestError.code == "23505")
-                            {
-                              EasyLoading.showInfo("Coupon code should be unique so enter coupon code again");
-                            }
-                            print("postgrestError.code ${postgrestError.code}");
+                        },
+                      ).onError((error, stackTrace) {
+                        if (error is PostgrestException) {
+                          final postgrestError = error as PostgrestException;
+                          if (postgrestError.code == "23505") {
+                            EasyLoading.showInfo("Coupon code should be unique so enter coupon code again");
                           }
-                        });
-                    }
-                    else{
-                      if(formKey.currentState!.validate())
-                      {
-
-                        int? venueId ;
-                        if(venueListController.text.isNotEmpty)
-                        {
-                          var res =venueList.value?.firstWhere((element) => element['venue_name']==venueListController.text);
+                          print("postgrestError.code ${postgrestError.code}");
+                        }
+                      });
+                    } else {
+                      if (formKey.currentState!.validate()) {
+                        int? venueId;
+                        if (venueListController.text.isNotEmpty) {
+                          var res = venueList.value?.firstWhere((element) => element['venue_name'] == venueListController.text);
                           venueId = res['id'];
                         }
                         // if(DateTime.parse(fromDateController.text.isNotEmpty ? fromDateController.text : "").isBefore(DateTime.parse(toDateController.text.isNotEmpty ? toDateController.text :""))){
@@ -425,31 +376,30 @@ class AddCoupon extends HookConsumerWidget {
                         // }
 
                         await Constants.supabase.from(SupaTables.coupons).insert({
-                          'venue_id' : venueId ?? null,
-                          'discount_value' : disValueController.text,
-                          'discount_unit' : selectedDiscountUnit.value,
-                          'valid_from' : fromDateController.text.isNotEmpty ? fromDateController.text : null,
-                          'valid_until' : toDateController.text.isNotEmpty ? toDateController.text : null,
-                          'coupon_code' : couponCodeController.text,
-                          'maximum_discount_amount' : maxDisAmountController.text.isNotEmpty ? maxDisAmountController.text : null,
-                          'maximum_coupon_usage' : maxCouponLimitController.text.isNotEmpty ? maxCouponLimitController.text : null,
-                          'is_global' : couponType.value == "Global",
-                          'title' : titleController.text,
-                          'description' : desController.text
-                        }).then((value) {
-                          pageController.jumpToPage(0);
-                        },).onError((error, stackTrace) {
-
-                          if(error is PostgrestException){
+                          'venue_id': venueId ?? null,
+                          'discount_value': disValueController.text,
+                          'discount_unit': selectedDiscountUnit.value,
+                          'valid_from': fromDateController.text.isNotEmpty ? fromDateController.text : null,
+                          'valid_until': toDateController.text.isNotEmpty ? toDateController.text : null,
+                          'coupon_code': couponCodeController.text,
+                          'maximum_discount_amount': maxDisAmountController.text.isNotEmpty ? maxDisAmountController.text : null,
+                          'maximum_coupon_usage': maxCouponLimitController.text.isNotEmpty ? maxCouponLimitController.text : null,
+                          'is_global': couponType.value == "Global",
+                          'title': titleController.text,
+                          'description': desController.text
+                        }).then(
+                          (value) {
+                            pageController.jumpToPage(0);
+                          },
+                        ).onError((error, stackTrace) {
+                          if (error is PostgrestException) {
                             final postgrestError = error as PostgrestException;
-                            if(postgrestError.code == "23505")
-                            {
+                            if (postgrestError.code == "23505") {
                               EasyLoading.showInfo("Coupon code should be unique so enter coupon code again");
                             }
                             print("postgrestError.code ${postgrestError.code}");
                           }
                         });
-
                       }
                     }
                   })
@@ -466,34 +416,36 @@ class AddCoupon extends HookConsumerWidget {
 class AllCouponScreen extends HookConsumerWidget {
   final ObjectRef<Map<String, dynamic>?> editItem;
   final PageController pageController;
-  AllCouponScreen(this.editItem,this.pageController,{super.key});
+
+  AllCouponScreen(this.editItem, this.pageController, {super.key});
 
   final controller = PagedDataTableController<int, Map<dynamic, dynamic>>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     var defaultText = TextStyle(color: Theme.of(context).colorScheme.onBackground);
 
     var sizeFactor = 0.076;
 
-
-    useEffect(() {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        controller.refresh();
-      });
-
-    },);
+    useEffect(
+      () {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          controller.refresh();
+        });
+      },
+    );
 
     //var limit = useState(4);
 
-    return  Padding(
+    return Padding(
       padding: const EdgeInsets.only(top: 30.0),
       child: PagedDataTable<int, Map>(
-        // filters: [TextTableFilter(chipFormatter: (value) => 'By $value', id: 'name', title: 'Trainer\'s Name')],TODO pending
         controller: controller,
         theme: PagedDataTableThemeData(
-            configuration: const PagedDataTableConfiguration(initialPageSize: 50,pageSizes: [10,20,50,100],),
+            configuration: const PagedDataTableConfiguration(
+              initialPageSize: 50,
+              pageSizes: [10, 20, 50, 100],
+            ),
             footerTextStyle: Theme.of(context).textTheme.bodyMedium,
             headerTextStyle: Theme.of(context).textTheme.titleLarge,
             rowsTextStyle: Theme.of(context).textTheme.bodyMedium ?? defaultText,
@@ -502,28 +454,15 @@ class AllCouponScreen extends HookConsumerWidget {
             backgroundColor: Theme.of(context).colorScheme.background,
             textStyle: Theme.of(context).textTheme.bodyMedium ?? defaultText),
         fetchPage: (pageToken, pageSize, sortBy, filtering) async {
-          //var users = await Constants.supabase.from(SupaTables.owner_profile).select();
-
           var coupons;
 
-            coupons = await Constants.supabase.from(SupaTables.coupons).select().range(pageToken, pageToken + pageSize);
+          coupons = await Constants.supabase.from(SupaTables.coupons).select().range(pageToken, pageToken + pageSize);
 
-
-          return PaginationResult.items(elements: [...coupons], nextPageToken: (coupons).length < pageSize  ? null : pageToken + pageSize, size: (coupons).length);
-
+          return PaginationResult.items(
+              elements: [...coupons], nextPageToken: (coupons).length < pageSize ? null : pageToken + pageSize, size: (coupons).length);
         },
         initialPage: 0,
-        // header: Padding(
-        //   padding: const EdgeInsets.all(8.0),
-        //   child: TextFormFieldWithDottedBorder(context, txtController, "Search",onChanged: (p0) async {
-        //
-        //     ref.read(ownerSearchValueProvider.notifier).state = p0;
-        //     controller.refresh();
-        //
-        //   },),
-        // ),
         columns: [
-
           TableColumn(
             sizeFactor: sizeFactor,
             title: 'Title',
@@ -542,26 +481,29 @@ class AllCouponScreen extends HookConsumerWidget {
             sizeFactor: sizeFactor,
             title: 'Global Coupon',
             cellBuilder: (p0) {
-              return Text("${p0['is_global']!=null ? p0['is_global'] :"-"}");
+              return Text("${p0['is_global'] != null ? p0['is_global'] : "-"}");
             },
           ),
           TableColumn(
             sizeFactor: sizeFactor,
             title: 'Coupon Limit',
             cellBuilder: (p0) {
-              return Text(p0['maximum_coupon_usage'] !=null ? "${p0['maximum_coupon_usage']}" : "-");
+              return Text(p0['maximum_coupon_usage'] != null ? "${p0['maximum_coupon_usage']}" : "-");
             },
           ),
           TableColumn(
             sizeFactor: sizeFactor,
             title: 'Venue Name',
             cellBuilder: (p0) {
-              if(p0['venue_id'] !=null){
-                return ref.watch(getAllBookingVenueProvider(p0['venue_id'])).when(data: (data) {
-                  return Text(data[0]['venue_name']);
-                }, error: (error, stackTrace) => Text(error.toString()), loading: () => SizedBox(),);
-              }
-              else{
+              if (p0['venue_id'] != null) {
+                return ref.watch(getAllBookingVenueProvider(p0['venue_id'])).when(
+                      data: (data) {
+                        return Text(data[0]['venue_name']);
+                      },
+                      error: (error, stackTrace) => Text(error.toString()),
+                      loading: () => SizedBox(),
+                    );
+              } else {
                 return Text("-");
               }
             },
@@ -570,75 +512,89 @@ class AllCouponScreen extends HookConsumerWidget {
             sizeFactor: sizeFactor,
             title: 'Dis Amount',
             cellBuilder: (p0) {
-              return Text(p0['maximum_discount_amount'] !=null ? "${p0['maximum_discount_amount']}" : "-");
+              return Text(p0['maximum_discount_amount'] != null ? "${p0['maximum_discount_amount']}" : "-");
             },
           ),
           TableColumn(
             sizeFactor: sizeFactor,
             title: 'Coupon Code',
             cellBuilder: (p0) {
-              return Text(p0['coupon_code']!=null ? "${p0['coupon_code']}" : "-");
+              return Text(p0['coupon_code'] != null ? "${p0['coupon_code']}" : "-");
             },
           ),
           TableColumn(
             sizeFactor: sizeFactor,
             title: 'Valid From',
             cellBuilder: (p0) {
-              return Text(p0['valid_from']!=null ? "${p0['valid_from']}" : "-");
+              return Text(p0['valid_from'] != null ? "${p0['valid_from']}" : "-");
             },
           ),
           TableColumn(
             sizeFactor: sizeFactor,
             title: 'Valid Until',
             cellBuilder: (p0) {
-              return Text(p0['valid_until']!=null ? "${p0['valid_until']}" : "-");
+              return Text(p0['valid_until'] != null ? "${p0['valid_until']}" : "-");
             },
           ),
           TableColumn(
             sizeFactor: sizeFactor,
             title: 'Discount Unit',
             cellBuilder: (p0) {
-              return Text(p0['discount_unit']!=null ? "${p0['discount_unit']}" : "-");
+              return Text(p0['discount_unit'] != null ? "${p0['discount_unit']}" : "-");
             },
           ),
           TableColumn(
             sizeFactor: sizeFactor,
             title: 'Discount Value',
             cellBuilder: (p0) {
-              return Text(p0['discount_value']!=null ? "${p0['discount_value']}" : "-");
+              return Text(p0['discount_value'] != null ? "${p0['discount_value']}" : "-");
             },
           ),
-
           TableColumn(
             sizeFactor: sizeFactor,
             title: 'Edit',
             cellBuilder: (p0) {
-              return IconButton(onPressed: () async {
-                editItem.value = p0.cast<String,dynamic>();
-                pageController.jumpToPage(1);
-                  }, icon: Icon(Icons.edit,color: CustomColor.txtMediumGray,size: 20,));
+              return IconButton(
+                  onPressed: () async {
+                    editItem.value = p0.cast<String, dynamic>();
+                    pageController.jumpToPage(1);
+                  },
+                  icon: Icon(
+                    Icons.edit,
+                    color: CustomColor.txtMediumGray,
+                    size: 20,
+                  ));
             },
           ),
           TableColumn(
             sizeFactor: sizeFactor,
             title: 'Delete',
             cellBuilder: (p0) {
-              return IconButton(onPressed: () async {
-
-                showConfirmationDialog(context, "Are you sure want to delete this coupon", ()  {
-                  Constants.supabase.from(SupaTables.coupons).delete().eq("id", p0['id']).then((value) {
-                    controller.refresh();
-                  },);
-
-                },);
-              }, icon: Icon(Icons.delete,color: Colors.red,));
+              return IconButton(
+                  onPressed: () async {
+                    showConfirmationDialog(
+                      context,
+                      "Are you sure want to delete this coupon",
+                      () {
+                        Constants.supabase.from(SupaTables.coupons).delete().eq("id", p0['id']).then(
+                          (value) {
+                            controller.refresh();
+                          },
+                        );
+                      },
+                    );
+                  },
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ));
             },
           ),
         ],
-
       ),
     );
   }
+
   List<dynamic> _filterCities(List<dynamic> cities, query) {
     if (query.isEmpty) {
       return cities;
@@ -647,4 +603,3 @@ class AllCouponScreen extends HookConsumerWidget {
     }
   }
 }
-

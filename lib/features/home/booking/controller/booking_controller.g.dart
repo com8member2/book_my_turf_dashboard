@@ -6,8 +6,8 @@ part of 'booking_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getAllBookingUsersHash() =>
-    r'7b41025eb11105162c4df1b2406edc2523ef0df7';
+String _$getAllBookingVenueHash() =>
+    r'47ee277ea1621bbb337246ed2e6e022f7ba04773';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,135 +29,6 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
-
-/// See also [getAllBookingUsers].
-@ProviderFor(getAllBookingUsers)
-const getAllBookingUsersProvider = GetAllBookingUsersFamily();
-
-/// See also [getAllBookingUsers].
-class GetAllBookingUsersFamily extends Family<AsyncValue<List>> {
-  /// See also [getAllBookingUsers].
-  const GetAllBookingUsersFamily();
-
-  /// See also [getAllBookingUsers].
-  GetAllBookingUsersProvider call(
-    dynamic id,
-  ) {
-    return GetAllBookingUsersProvider(
-      id,
-    );
-  }
-
-  @override
-  GetAllBookingUsersProvider getProviderOverride(
-    covariant GetAllBookingUsersProvider provider,
-  ) {
-    return call(
-      provider.id,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'getAllBookingUsersProvider';
-}
-
-/// See also [getAllBookingUsers].
-class GetAllBookingUsersProvider extends AutoDisposeFutureProvider<List> {
-  /// See also [getAllBookingUsers].
-  GetAllBookingUsersProvider(
-    dynamic id,
-  ) : this._internal(
-          (ref) => getAllBookingUsers(
-            ref as GetAllBookingUsersRef,
-            id,
-          ),
-          from: getAllBookingUsersProvider,
-          name: r'getAllBookingUsersProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$getAllBookingUsersHash,
-          dependencies: GetAllBookingUsersFamily._dependencies,
-          allTransitiveDependencies:
-              GetAllBookingUsersFamily._allTransitiveDependencies,
-          id: id,
-        );
-
-  GetAllBookingUsersProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.id,
-  }) : super.internal();
-
-  final dynamic id;
-
-  @override
-  Override overrideWith(
-    FutureOr<List> Function(GetAllBookingUsersRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: GetAllBookingUsersProvider._internal(
-        (ref) => create(ref as GetAllBookingUsersRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        id: id,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<List> createElement() {
-    return _GetAllBookingUsersProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is GetAllBookingUsersProvider && other.id == id;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, id.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-mixin GetAllBookingUsersRef on AutoDisposeFutureProviderRef<List> {
-  /// The parameter `id` of this provider.
-  dynamic get id;
-}
-
-class _GetAllBookingUsersProviderElement
-    extends AutoDisposeFutureProviderElement<List> with GetAllBookingUsersRef {
-  _GetAllBookingUsersProviderElement(super.provider);
-
-  @override
-  dynamic get id => (origin as GetAllBookingUsersProvider).id;
-}
-
-String _$getAllBookingVenueHash() =>
-    r'47ee277ea1621bbb337246ed2e6e022f7ba04773';
 
 /// See also [getAllBookingVenue].
 @ProviderFor(getAllBookingVenue)
@@ -285,29 +156,39 @@ class _GetAllBookingVenueProviderElement
   dynamic get id => (origin as GetAllBookingVenueProvider).id;
 }
 
-String _$getBookingTurfHash() => r'3c1c4334b92d89614ab9ee8d9cb02ebc415fbecf';
+String _$bookingDetailsControllerHash() =>
+    r'd17e3fc1494654666b2398e78a646f69fed9fcf9';
 
-/// See also [getBookingTurf].
-@ProviderFor(getBookingTurf)
-const getBookingTurfProvider = GetBookingTurfFamily();
+abstract class _$BookingDetailsController
+    extends BuildlessAutoDisposeAsyncNotifier<Map> {
+  late final dynamic id;
 
-/// See also [getBookingTurf].
-class GetBookingTurfFamily extends Family<AsyncValue<List>> {
-  /// See also [getBookingTurf].
-  const GetBookingTurfFamily();
+  Future<Map> build(
+    dynamic id,
+  );
+}
 
-  /// See also [getBookingTurf].
-  GetBookingTurfProvider call(
-    List<dynamic> id,
+/// See also [BookingDetailsController].
+@ProviderFor(BookingDetailsController)
+const bookingDetailsControllerProvider = BookingDetailsControllerFamily();
+
+/// See also [BookingDetailsController].
+class BookingDetailsControllerFamily extends Family<AsyncValue<Map>> {
+  /// See also [BookingDetailsController].
+  const BookingDetailsControllerFamily();
+
+  /// See also [BookingDetailsController].
+  BookingDetailsControllerProvider call(
+    dynamic id,
   ) {
-    return GetBookingTurfProvider(
+    return BookingDetailsControllerProvider(
       id,
     );
   }
 
   @override
-  GetBookingTurfProvider getProviderOverride(
-    covariant GetBookingTurfProvider provider,
+  BookingDetailsControllerProvider getProviderOverride(
+    covariant BookingDetailsControllerProvider provider,
   ) {
     return call(
       provider.id,
@@ -326,161 +207,31 @@ class GetBookingTurfFamily extends Family<AsyncValue<List>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'getBookingTurfProvider';
+  String? get name => r'bookingDetailsControllerProvider';
 }
 
-/// See also [getBookingTurf].
-class GetBookingTurfProvider extends AutoDisposeFutureProvider<List> {
-  /// See also [getBookingTurf].
-  GetBookingTurfProvider(
-    List<dynamic> id,
+/// See also [BookingDetailsController].
+class BookingDetailsControllerProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<BookingDetailsController,
+        Map> {
+  /// See also [BookingDetailsController].
+  BookingDetailsControllerProvider(
+    dynamic id,
   ) : this._internal(
-          (ref) => getBookingTurf(
-            ref as GetBookingTurfRef,
-            id,
-          ),
-          from: getBookingTurfProvider,
-          name: r'getBookingTurfProvider',
+          () => BookingDetailsController()..id = id,
+          from: bookingDetailsControllerProvider,
+          name: r'bookingDetailsControllerProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$getBookingTurfHash,
-          dependencies: GetBookingTurfFamily._dependencies,
+                  : _$bookingDetailsControllerHash,
+          dependencies: BookingDetailsControllerFamily._dependencies,
           allTransitiveDependencies:
-              GetBookingTurfFamily._allTransitiveDependencies,
+              BookingDetailsControllerFamily._allTransitiveDependencies,
           id: id,
         );
 
-  GetBookingTurfProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.id,
-  }) : super.internal();
-
-  final List<dynamic> id;
-
-  @override
-  Override overrideWith(
-    FutureOr<List> Function(GetBookingTurfRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: GetBookingTurfProvider._internal(
-        (ref) => create(ref as GetBookingTurfRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        id: id,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<List> createElement() {
-    return _GetBookingTurfProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is GetBookingTurfProvider && other.id == id;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, id.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-mixin GetBookingTurfRef on AutoDisposeFutureProviderRef<List> {
-  /// The parameter `id` of this provider.
-  List<dynamic> get id;
-}
-
-class _GetBookingTurfProviderElement
-    extends AutoDisposeFutureProviderElement<List> with GetBookingTurfRef {
-  _GetBookingTurfProviderElement(super.provider);
-
-  @override
-  List<dynamic> get id => (origin as GetBookingTurfProvider).id;
-}
-
-String _$getBookingDetailsHash() => r'23fdc4a36deadfc27456009d24511d1a08019873';
-
-/// See also [getBookingDetails].
-@ProviderFor(getBookingDetails)
-const getBookingDetailsProvider = GetBookingDetailsFamily();
-
-/// See also [getBookingDetails].
-class GetBookingDetailsFamily extends Family<AsyncValue<BookingEntity>> {
-  /// See also [getBookingDetails].
-  const GetBookingDetailsFamily();
-
-  /// See also [getBookingDetails].
-  GetBookingDetailsProvider call(
-    dynamic id,
-  ) {
-    return GetBookingDetailsProvider(
-      id,
-    );
-  }
-
-  @override
-  GetBookingDetailsProvider getProviderOverride(
-    covariant GetBookingDetailsProvider provider,
-  ) {
-    return call(
-      provider.id,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'getBookingDetailsProvider';
-}
-
-/// See also [getBookingDetails].
-class GetBookingDetailsProvider
-    extends AutoDisposeFutureProvider<BookingEntity> {
-  /// See also [getBookingDetails].
-  GetBookingDetailsProvider(
-    dynamic id,
-  ) : this._internal(
-          (ref) => getBookingDetails(
-            ref as GetBookingDetailsRef,
-            id,
-          ),
-          from: getBookingDetailsProvider,
-          name: r'getBookingDetailsProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$getBookingDetailsHash,
-          dependencies: GetBookingDetailsFamily._dependencies,
-          allTransitiveDependencies:
-              GetBookingDetailsFamily._allTransitiveDependencies,
-          id: id,
-        );
-
-  GetBookingDetailsProvider._internal(
+  BookingDetailsControllerProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -493,13 +244,20 @@ class GetBookingDetailsProvider
   final dynamic id;
 
   @override
-  Override overrideWith(
-    FutureOr<BookingEntity> Function(GetBookingDetailsRef provider) create,
+  Future<Map> runNotifierBuild(
+    covariant BookingDetailsController notifier,
   ) {
+    return notifier.build(
+      id,
+    );
+  }
+
+  @override
+  Override overrideWith(BookingDetailsController Function() create) {
     return ProviderOverride(
       origin: this,
-      override: GetBookingDetailsProvider._internal(
-        (ref) => create(ref as GetBookingDetailsRef),
+      override: BookingDetailsControllerProvider._internal(
+        () => create()..id = id,
         from: from,
         name: null,
         dependencies: null,
@@ -511,13 +269,14 @@ class GetBookingDetailsProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<BookingEntity> createElement() {
-    return _GetBookingDetailsProviderElement(this);
+  AutoDisposeAsyncNotifierProviderElement<BookingDetailsController, Map>
+      createElement() {
+    return _BookingDetailsControllerProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetBookingDetailsProvider && other.id == id;
+    return other is BookingDetailsControllerProvider && other.id == id;
   }
 
   @override
@@ -529,18 +288,18 @@ class GetBookingDetailsProvider
   }
 }
 
-mixin GetBookingDetailsRef on AutoDisposeFutureProviderRef<BookingEntity> {
+mixin BookingDetailsControllerRef on AutoDisposeAsyncNotifierProviderRef<Map> {
   /// The parameter `id` of this provider.
   dynamic get id;
 }
 
-class _GetBookingDetailsProviderElement
-    extends AutoDisposeFutureProviderElement<BookingEntity>
-    with GetBookingDetailsRef {
-  _GetBookingDetailsProviderElement(super.provider);
+class _BookingDetailsControllerProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<BookingDetailsController,
+        Map> with BookingDetailsControllerRef {
+  _BookingDetailsControllerProviderElement(super.provider);
 
   @override
-  dynamic get id => (origin as GetBookingDetailsProvider).id;
+  dynamic get id => (origin as BookingDetailsControllerProvider).id;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

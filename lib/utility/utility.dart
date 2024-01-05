@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:book_my_turf_dashboard/model/booking_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +25,14 @@ final isDarktheme = ValueNotifier(WidgetsBinding.instance.platformDispatcher.pla
 
 Future<SharedPreferences> getSharedPreference() async {
   return pref ??= await SharedPreferences.getInstance();
+}
+
+class CustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+  };
 }
 
 // SupabaseClient getAdminSupabase(){

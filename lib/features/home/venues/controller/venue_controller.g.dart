@@ -154,7 +154,7 @@ class _GetTurfsProviderElement extends AutoDisposeFutureProviderElement<List>
   dynamic get id => (origin as GetTurfsProvider).id;
 }
 
-String _$getStaffHash() => r'47ae14017be989cd4e0351e5eaca2cb02845411f';
+String _$getStaffHash() => r'e05e5dc715897719fe8970a19b0ec919c22cb2cd';
 
 /// See also [getStaff].
 @ProviderFor(getStaff)
@@ -281,21 +281,6 @@ class _GetStaffProviderElement extends AutoDisposeFutureProviderElement<List>
   dynamic get id => (origin as GetStaffProvider).id;
 }
 
-String _$getAllVenuesCityHash() => r'ee33e7dc18c042287a26c6bcee7ba0fa0c386637';
-
-/// See also [getAllVenuesCity].
-@ProviderFor(getAllVenuesCity)
-final getAllVenuesCityProvider = AutoDisposeFutureProvider<List>.internal(
-  getAllVenuesCity,
-  name: r'getAllVenuesCityProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getAllVenuesCityHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef GetAllVenuesCityRef = AutoDisposeFutureProviderRef<List>;
 String _$getAllVenuesHash() => r'856175ca0a4a46cff9c69b08595c9fe8fb1e7580';
 
 /// See also [getAllVenues].

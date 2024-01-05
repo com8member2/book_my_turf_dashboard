@@ -8,15 +8,6 @@ import '../../../../consatant/Constants.dart';
 part 'booking_controller.g.dart';
 
 @riverpod
-Future<List> getAllBookingUsers(GetAllBookingUsersRef ref,id) async {
-  List list = await Constants.supabase
-      .from(SupaTables.user_profile)
-      .select("name").eq('id', id);
-
-  return list;
-}
-
-@riverpod
 Future<List> getAllBookingVenue(GetAllBookingVenueRef ref,id) async {
   List list = await Constants.supabase
       .from(SupaTables.venue_list)
@@ -24,23 +15,14 @@ Future<List> getAllBookingVenue(GetAllBookingVenueRef ref,id) async {
 
   return list;
 }
-
 @riverpod
-Future<List> getBookingTurf(GetBookingTurfRef ref,List id) async {
-
-  List list = await Constants.supabase
-      .from(SupaTables.turf_list)
-      .select().in_('id', id.map((e) => e).toList());
-
-  return list;
-}
-
-@riverpod
-Future<BookingEntity> getBookingDetails(GetBookingDetailsRef ref, id) async {
-
-  List list = await Constants.supabase
-      .from(SupaTables.bookings)
-      .select().eq('id', id);
-
-  return BookingEntity.fromJson(list[0]);
+class BookingDetailsController extends _$BookingDetailsController {
+  @override
+  Future<Map> build(id) async {
+    return await Constants.supabase
+        .from(SupaTables.bookings)
+        .select('*,${SupaTables.user_profile}(*),${SupaTables.venue_list}(*,${SupaTables.turf_list}(*)),${SupaTables.bookingSlots}(*)')
+        .eq('id', id)
+        .single();
+  }
 }

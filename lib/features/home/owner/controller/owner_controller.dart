@@ -8,7 +8,7 @@ part 'owner_controller.g.dart';
 
 @riverpod
 Future<List> getAllOwners(GetAllOwnersRef ref) async {
-  var list = await Constants.supabase.from(SupaTables.owner_profile).select();
+  var list = await Constants.supabase.from(SupaTables.owner_profile).select().is_('deletaed_at', null);
   return list;
 }
 

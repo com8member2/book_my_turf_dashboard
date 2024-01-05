@@ -20,6 +20,8 @@ class SupaTables {
   static String firebase_messaging_keys = "firebase_messaging_keys";
   static String bookings = "bookings";
   static String coupons = "coupons";
+  static String bookingSlots = "booking_slots";
+
 }
 
 class SupaStorage {

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:intl/src/intl/date_format.dart';
 
 import '../../../../consatant/ColorConstant.dart';
 import '../../../../model/venue_entity.dart';
@@ -17,7 +18,7 @@ import '../../../../utility/utility.dart';
 import '../controller/booking_controller.dart';
 
 class BookingDetailsScreen extends HookConsumerWidget {
-  BookingEntity? editItem;
+
 
   final id ;
 
@@ -25,22 +26,21 @@ class BookingDetailsScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //print("staffList ${staffList}");
+    return ref.watch(BookingDetailsControllerProvider(id)).when(data: (editItem) {
 
+      var selectedItem = useState<String>(editItem['status'] ?? BookingStatus.pending.value);
+      var slotList = useState((editItem['${SupaTables.bookingSlots}'] as List));
+      var dateList = useState([]);
+      var turfList = useState((editItem['${SupaTables.venue_list}']['${SupaTables.turf_list}'] as List));
+      var scrollController = useScrollController();
 
+      useEffect(() {
+        for(var element in (editItem['${SupaTables.bookingSlots}'] as List)){
+          dateList.value.add(element['date']);
+        }
+        return null;
 
-
-
-    var scrollController = useScrollController();
-
-
-    return ref.watch(getBookingDetailsProvider(id)).when(data: (data) {
-      editItem = data;
-      var selectedItem = useState<String>(editItem?.status ?? BookingStatus.pending.value);
-      var slotList = useState(editItem?.slots);
-      var dateList = useState(editItem?.date);
-      print(" editItem editItem editItem ${id} --- ${editItem}");
-
+      },[]);
       return Stack(
         children: [
           Padding(
@@ -49,24 +49,12 @@ class BookingDetailsScreen extends HookConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Booking Price : ${editItem?.price.toString()}"),
+                  Text("Booking Price : ${editItem['price'].toString()}"),
                   Padding(
-                    padding: EdgeInsets.only(top: 25, bottom: 25),
-                    child: editItem?.userId !=null ? ref.watch(getAllBookingUsersProvider(editItem?.userId)).when(
-                      data: (data) {
-                        return Text("User Name : ${data[0]['name']}");
-                      },
-                      error: (error, stackTrace) => Text(error.toString()),
-                      loading: () => SizedBox(),
-                    ) : Text("User Name : ${editItem?.userName}"),
+                    padding: const EdgeInsets.only(top: 25.0,bottom: 25),
+                    child: Text('User name : ${editItem['user_id'] !=null ? editItem['${SupaTables.user_profile}']['name'] : editItem['user_name']}'),
                   ),
-                  ref.watch(getAllBookingVenueProvider(editItem?.venueId)).when(
-                    data: (data) {
-                      return Text("Venue Name : ${data[0]['venue_name']}");
-                    },
-                    error: (error, stackTrace) => Text(error.toString()),
-                    loading: () => SizedBox(),
-                  ),
+                  Text('Venue Name : ${editItem['${SupaTables.venue_list}']['venue_name']}'),
                   Padding(
                     padding: const EdgeInsets.only(top: 25.0, bottom: 25),
                     child: Row(
@@ -114,17 +102,17 @@ class BookingDetailsScreen extends HookConsumerWidget {
                       SizedBox(
                         width: 20,
                       ),
-                      if(dateList.value!.isEmpty)
+                      if(dateList.value!.toSet().toList().isEmpty)
                         Center(child: Text("No dates found"),),
                       Flexible(
                         child:  SizedBox(
                             height: 50,
                             child: ListView.separated(
-                              itemCount: dateList.value!.length,
+                              itemCount: dateList.value!.toSet().toList().length,
                               scrollDirection: Axis.horizontal,
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                final item = dateList.value?[index];
+                                final item = dateList.value?.toSet().toList()[index];
                                 return SizedBox(
                                   width: 150,
                                   child: Card(
@@ -151,26 +139,58 @@ class BookingDetailsScreen extends HookConsumerWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Booking Slots : ",
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
+                        Text("Booking Slots : ",),
+                        SizedBox(width: 20,),
                         if(slotList.value!.isEmpty)
                           Center(child: Text("No slot found"),),
-                        Flexible(
-                          child:  SizedBox(
+
+
+                        // SingleChildScrollView(
+                        //   controller: scrollController,
+                        //   scrollDirection: Axis.horizontal,
+                        //   child: Row(children: slotList.value.map((item) {
+                        //     return SizedBox(
+                        //       width: MediaQuery.of(context).size.width * 0.20,
+                        //       child: Card(
+                        //         child: ListTile(
+                        //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                        //           tileColor: CustomColor.gray.withOpacity(0.5),
+                        //           subtitle: Padding(
+                        //             padding: const EdgeInsets.all(10.0),
+                        //             child: Column(
+                        //                 crossAxisAlignment:
+                        //                 CrossAxisAlignment.start,
+                        //                 mainAxisSize: MainAxisSize.min,
+                        //                 children: [
+                        //                   Text("Price : ${item['price']}"),
+                        //                   Padding(
+                        //                     padding: const EdgeInsets.only(
+                        //                         top: 10.0, bottom: 10),
+                        //                     child: Text(
+                        //                       "Time : ${item['start_time']}",
+                        //                       overflow: TextOverflow.ellipsis,
+                        //                     ),
+                        //                   ),
+                        //                   Text("Duration : ${item['duration']}"),
+                        //                 ]),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     );
+                        //   }).toList(),),
+                        // )
+
+                        Expanded(
+                          child: SizedBox(
                               height: 200,
                               child: ListView.separated(
-                                itemCount: slotList.value!.length,
+                                itemCount: slotList.value.length,
                                 scrollDirection: Axis.horizontal,
+                                controller: scrollController,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
-                                  final item = slotList.value?[index];
-                                  print("slot list ${item?.turf}-----${[
-                                    item?.turf
-                                  ]}");
+                                  final item = slotList.value[index];
+
                                   return SizedBox(
                                     width: MediaQuery.of(context).size.width * 0.20,
                                     child: Card(
@@ -184,16 +204,20 @@ class BookingDetailsScreen extends HookConsumerWidget {
                                               CrossAxisAlignment.start,
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
-                                                Text("Price : ${item?.price}"),
+                                                Text("Price : ${item['price']}"),
                                                 Padding(
-                                                  padding: const EdgeInsets.only(
-                                                      top: 10.0, bottom: 10),
-                                                  child: Text(
-                                                    "Time : ${item?.time}",
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ),
+                                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+                                                  child: Text("Start Time : ${DateFormat('HH:mm:ss').format(DateTime.parse(item['start_time'].toString()))}", overflow: TextOverflow.ellipsis,),
                                                 ),
-                                                Text("Duration : ${item?.duration}"),
+                                                Text("End Time : ${DateFormat('HH:mm:ss').format(DateTime.parse(item['end_time'].toString()))}", overflow: TextOverflow.ellipsis,),
+
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+                                                  child: Text("Date : ${DateFormat('yyyy-MM-dd').format(DateTime.parse(item['start_time'].toString()))}", overflow: TextOverflow.ellipsis,),
+                                                ),
+
+
+                                                Text("Duration : ${item['duration']}"),
                                               ]),
                                         ),
                                       ),
@@ -203,82 +227,83 @@ class BookingDetailsScreen extends HookConsumerWidget {
                                 separatorBuilder:
                                     (BuildContext context, int index) {
                                   return SizedBox(
-                                    width: 30,
+                                    width: 15,
                                   );
                                 },
-                              )) ,
+                              )),
                         ),
                       ],
                     ),
                   ),
-                  ref.watch(getBookingTurfProvider(editItem?.turfId ??[])).when(
-                    data: (turfList) {
-
-
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 25.0, bottom: 25),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Booking Turfs : ",
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            if(turfList.isEmpty)
-                              Center(child: Text("No turfs found"),),
-                            Expanded(
-                              child: SizedBox(
-                                height: 250,
-                                child: ListView.separated(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: turfList.length,
-                                  itemBuilder: (context, index) {
-                                    final item = turfList[index];
-                                    return SizedBox(
-                                        width: MediaQuery.of(context).size.width * 0.20,
-                                        child: Card(
-                                          child: ListTile(
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                                            tileColor: CustomColor.gray.withOpacity(0.5),
-                                            title: Text("Name : ${item['turf_name'] != null ? item['turf_name'] : ""}",overflow: TextOverflow.ellipsis,),
-                                            subtitle: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Padding(
-                                                  padding: const EdgeInsets.only(top: 10,bottom: 10),
-                                                  child: Text("Shape : ${item['turf_shape'] != null ? item['turf_shape'] : ""}",overflow: TextOverflow.ellipsis,),
-                                                ),
-                                                Text("Surface : ${item['ground_surface'] != null ? item['ground_surface'] : ""}",overflow: TextOverflow.ellipsis,),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(top: 10,bottom: 10),
-                                                  child: Text("Facilities  : ${item['facilities'] != null ? item['facilities'].toString().replaceAll("[", '').replaceAll(']', '') : ""}",overflow: TextOverflow.ellipsis,),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ));
-                                  },
-                                  separatorBuilder: (BuildContext context, int index) {
-                                    return SizedBox(
-                                      width: 15,
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Booking Turfs : ",
                         ),
-                      );
-                    },
-                    error: (error, stackTrace) => Text(error.toString()),
-                    loading: () => SizedBox(),
-                  ),
-
-
-                ]),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        if (turfList.value.isEmpty)
+                          Center(
+                            child: Text("No turfs found"),
+                          ),
+                        Expanded(
+                          child: SizedBox(
+                            height: 250,
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: turfList.value.length,
+                              itemBuilder: (context, index) {
+                                final item = turfList.value[index];
+                                return SizedBox(
+                                    width: MediaQuery.of(context).size.width * 0.20,
+                                    child: Card(
+                                      child: ListTile(
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                        tileColor: CustomColor.gray.withOpacity(0.5),
+                                        title: Text(
+                                          "Name : ${item['turf_name'] != null ? item['turf_name'] : ""}",
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        subtitle: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                              child: Text(
+                                                "Shape : ${item['turf_shape'] != null ? item['turf_shape'] : ""}",
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            Text(
+                                              "Surface : ${item['ground_surface'] != null ? item['ground_surface'] : ""}",
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 10, bottom: 10),
+                                              child: Text(
+                                                "Facilities  : ${item['facilities'] != null ? item['facilities'].toString().replaceAll("[", '').replaceAll(']', '') : ""}",
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ));
+                              },
+                              separatorBuilder: (BuildContext context, int index) {
+                                return SizedBox(
+                                  width: 15,
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ]),
           ),
           Positioned(child: Align(
             alignment: Alignment.bottomCenter,
@@ -288,7 +313,7 @@ class BookingDetailsScreen extends HookConsumerWidget {
                 await Constants.supabase
                     .from(SupaTables.bookings)
                     .update({'status': selectedItem.value}).match(
-                    {'id': editItem?.id}).then((value) {
+                    {'id': editItem['id']}).then((value) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(

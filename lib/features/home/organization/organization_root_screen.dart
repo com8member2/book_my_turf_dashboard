@@ -27,7 +27,6 @@ class OrganizationRootScreen extends StatelessWidget {
                   children: [
                     ChoiceChip.elevated(
                       showCheckmark: false,
-                      // avatar: Icon(Icons.directions_run_rounded, color: Theme.of(context).colorScheme.primary),
                       selectedColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
                       selected: path == '/Organization',
                       onSelected: (value) {
@@ -40,7 +39,6 @@ class OrganizationRootScreen extends StatelessWidget {
                     SizedBox(height: 8),
                     ChoiceChip.elevated(
                       showCheckmark: false,
-                      // avatar: Icon(Icons.space_dashboard_rounded, color: Theme.of(context).colorScheme.primary),
                       selected: path == '/ConvenienceFeesScreen',
                       onSelected: (value) {
                         if (value) {
@@ -52,7 +50,6 @@ class OrganizationRootScreen extends StatelessWidget {
                     SizedBox(height: 8),
                     ChoiceChip.elevated(
                       showCheckmark: false,
-                      // avatar: Icon(Icons.self_improvement_rounded, color: Theme.of(context).colorScheme.primary),
                       selectedColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
                       selected: path == '/CouponListScreen',
                       onSelected: (value) {

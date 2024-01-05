@@ -25,10 +25,9 @@ class OwnerListScreen extends HookConsumerWidget {
 
     var txtController = useTextEditingController();
 
-    //var limit = useState(4);
+    var deletedOwnerList = useState([]);
 
     return  PagedDataTable<int, Map>(
-      // filters: [TextTableFilter(chipFormatter: (value) => 'By $value', id: 'name', title: 'Trainer\'s Name')],TODO pending
       controller: controller,
       theme: PagedDataTableThemeData(
           configuration: const PagedDataTableConfiguration(initialPageSize: 50,pageSizes: [10,20,50,100],),
@@ -40,25 +39,24 @@ class OwnerListScreen extends HookConsumerWidget {
           backgroundColor: Theme.of(context).colorScheme.background,
           textStyle: Theme.of(context).textTheme.bodyMedium ?? defaultText),
       fetchPage: (pageToken, pageSize, sortBy, filtering) async {
-        //var users = await Constants.supabase.from(SupaTables.owner_profile).select();
-
+        deletedOwnerList.value = await Constants.supabase.from(SupaTables.owner_profile).select('id').neq('deletaed_at',null);
         var users;
         if(ref.read(ownerSearchValueProvider).isNotEmpty){
           if(hasNumber(ref.read(ownerSearchValueProvider)))   // execute when enter phone-number
               {
-            users = await Constants.supabase.from(SupaTables.owner_profile).select().ilike('phone', "%+91 ${ref.read(ownerSearchValueProvider)}%");
+            users = await Constants.supabase.from(SupaTables.owner_profile).select().is_('deletaed_at', null).ilike('phone', "%+91 ${ref.read(ownerSearchValueProvider)}%");
           }
           else  // execute when enter username
               {
             users = await Constants.supabase
                 .from(SupaTables.owner_profile)
-                .select()
+                .select().is_('deletaed_at', null)
                 .ilike('name',"%${ref.read(ownerSearchValueProvider)}%");
           }
         }
         else
         {
-          users = await Constants.supabase.from(SupaTables.owner_profile).select().range(pageToken, pageToken + pageSize);
+          users = await Constants.supabase.from(SupaTables.owner_profile).select().is_('deletaed_at', null).range(pageToken, pageToken + pageSize);
         }
 
         return PaginationResult.items(elements: [...users], nextPageToken: (users).length < pageSize  ? null : pageToken + pageSize, size: (users).length);
@@ -74,6 +72,7 @@ class OwnerListScreen extends HookConsumerWidget {
 
         },),
       ),
+      footer: Text("Deleted Owners Count - ${deletedOwnerList.value.length}"),
       columns: [
 
         TableColumn(
@@ -115,11 +114,5 @@ class OwnerListScreen extends HookConsumerWidget {
 
     );
   }
-  List<dynamic> _filterCities(List<dynamic> cities, query) {
-    if (query.isEmpty) {
-      return cities;
-    } else {
-      return cities.where((city) => city['phone'].toLowerCase().contains(query)).toList();
-    }
-  }
+
 }

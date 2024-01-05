@@ -93,6 +93,7 @@ class MyApp extends HookConsumerWidget {
           //initialRoute: Constants.supabase.auth.currentUser?.id !=null ? AppRoute.rootScreen : AppRoute.loginScreen,
           routerConfig: router,
           //routes: AppRoute.routes,
+          scrollBehavior: CustomScrollBehavior(),
           debugShowCheckedModeBanner: false,
           title: 'Book For Sport Dashboard',
           themeMode: isDarkThemVal ? ThemeMode.dark:ThemeMode.light,

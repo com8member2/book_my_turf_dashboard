@@ -8,7 +8,7 @@ part 'user_controller.g.dart';
 
 @riverpod
 Future<List> getAllUsers(GetAllUsersRef ref) async {
-  var list = await Constants.supabase.from(SupaTables.user_profile).select();
+  var list = await Constants.supabase.from(SupaTables.user_profile).select().is_('deletaed_at', null);
   return list;
 }
 

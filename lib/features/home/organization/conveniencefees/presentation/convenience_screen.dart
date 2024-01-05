@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:paged_datatable/paged_datatable.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../../../consatant/Constants.dart';
-import '../../../../../../utility/utility.dart';
 import '../controller/organitation_controller.dart';
 
 
@@ -27,10 +25,8 @@ class ConvenienceScreen extends HookConsumerWidget {
 
     var users = useState([]);
 
-    //var limit = useState(4);
 
     return PagedDataTable<int, Map>(
-      // filters: [TextTableFilter(chipFormatter: (value) => 'By $value', id: 'name', title: 'Trainer\'s Name')],TODO pending
       controller: controller,
       theme: PagedDataTableThemeData(
           configuration: const PagedDataTableConfiguration(initialPageSize: 50,pageSizes: [10,20,50,1000],),
@@ -105,12 +101,5 @@ class ConvenienceScreen extends HookConsumerWidget {
       ],
 
     ) ;
-  }
-  List<dynamic> _filterCities(List<dynamic> cities, query) {
-    if (query.isEmpty) {
-      return cities;
-    } else {
-      return cities.where((city) => city['phone'].toLowerCase().contains(query)).toList();
-    }
   }
 }
