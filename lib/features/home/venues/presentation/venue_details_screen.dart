@@ -27,9 +27,6 @@ class VenueDetails extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-
-    //print("staffList ${staffList}");
-
     return ref.watch(getVenueDetailsProvider(id)).when(data: (data) {
       editItem = data;
 
@@ -89,8 +86,6 @@ class VenueDetails extends HookConsumerWidget {
                               selectedItem.value = newValue;
                               if(selectedItem.value == VenueStatus.rejected.value)
                               {
-                                print("selectedItem.value ${selectedItem.value}");
-
                                 showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
@@ -115,7 +110,6 @@ class VenueDetails extends HookConsumerWidget {
                                               'message': 'Your venue has been rejected please check your venue details again'
                                             });
                                             //await Constants.supabase.from(SupaTables.venue_list).update({'status' : selectedItem.value}).match({'id' : editItem.id});
-                                            print("rejectMessageController ${rejectMessageController.text}");
                                             Navigator.pop(context);
                                           },
                                           child: const Text("Send"),
@@ -252,7 +246,6 @@ class VenueDetails extends HookConsumerWidget {
                         SizedBox(width: 25,),
                         turfList.when(
                           data: (turfData) {
-                            print("turfData ${turfData}");
                             if (turfData.isEmpty) return Center(child: Text("No Turf Found"));
                             return Expanded(
                               child: SizedBox(
@@ -309,7 +302,6 @@ class VenueDetails extends HookConsumerWidget {
                       Text("Staff Details : "),
                       SizedBox(width: 20,),
                       staffList.when(data: (staffData) {
-                        print("staffDatastaffData ${staffData}");
                         if(staffData.isEmpty ) return Text("No staff found");
                         return  SizedBox(
                             height: 200,

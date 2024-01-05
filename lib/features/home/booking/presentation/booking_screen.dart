@@ -99,9 +99,6 @@ class BookingScreen extends HookConsumerWidget {
           cellBuilder: (p0) => IconButton(
               onPressed: () {
                 var map = Map<String, dynamic>.from(p0);
-                print("in booking screen ${map.map((key, value) => MapEntry(key.toString(), value.toString()))}");
-
-                print("mapmapmapmapmapmap ${map['id']}");
                 context.goNamed(AppRoute.bookingDetailsScreen,
                     pathParameters: {'id' :map['id'].toString()});
               },

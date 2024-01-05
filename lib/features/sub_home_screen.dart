@@ -61,7 +61,6 @@ class _HomeScreenState extends State<SubHomeScreen> {
                         selectedColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.1),
                         selected: widget.path.contains('/Users'),
                         onSelected: (value) {
-                          print("do mkmsd ---- ${value}");
                           if (value) {
                             context.goNamed(AppRoute.userListScreen);
                           }

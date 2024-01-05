@@ -62,11 +62,7 @@ class MyApp extends HookConsumerWidget {
 
       getSharedPreference().then(
             (value) {
-
-          print("isDarktheme.value 11111 ${value.getBool(PrefKeys.isDarkTheme)}");
-
-
-          if(value.getBool(PrefKeys.isDarkTheme)==null){
+              if(value.getBool(PrefKeys.isDarkTheme)==null){
             isDarktheme.value = WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;
           }
           else{
@@ -78,8 +74,6 @@ class MyApp extends HookConsumerWidget {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
 
       });
-
-      print("isDarktheme.value ${isDarktheme.value}");
 
       EasyLoading.instance.maskType = EasyLoadingMaskType.black;
       EasyLoading.instance.indicatorType = EasyLoadingIndicatorType.pulse;

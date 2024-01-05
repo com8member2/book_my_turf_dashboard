@@ -45,7 +45,6 @@ final router = GoRouter(
   navigatorKey: rootNavigatorKey,
   redirect: (context, state) async {
     //return '/Home';
-    print("state.fullPath ${state.fullPath}");
     if (Constants.supabase.auth.currentSession == null) {
       return '/Login';
     }
@@ -96,7 +95,6 @@ final router = GoRouter(
                 path: ':id',
                 name: AppRoute.bookingDetailsScreen,
                 builder: (BuildContext context, GoRouterState state) {
-                  print("state. ${state.pathParameters}");
                   return BookingDetailsScreen(state.pathParameters['id']);
                 },
               )
@@ -117,7 +115,6 @@ final router = GoRouter(
               path: ':id',
               name: AppRoute.venueDetailsScreen,
               builder: (BuildContext context,GoRouterState state) {
-                print("state.uri.queryParameters ${state.pathParameters}");
                 return VenueDetails(state.pathParameters['id']);
               },
 

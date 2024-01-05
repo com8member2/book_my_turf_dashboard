@@ -99,7 +99,6 @@ class AddCoupon extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print("editItem editItem editItem ${editItem}");
 
     final selectedDiscountUnit = useState(editItem != null ? editItem['discount_unit'] : 'PERCENTAGE');
     final couponType = useState(editItem != null && editItem['venue_id'] != null ? 'For Venue' : 'Global');
@@ -361,7 +360,6 @@ class AddCoupon extends HookConsumerWidget {
                           if (postgrestError.code == "23505") {
                             EasyLoading.showInfo("Coupon code should be unique so enter coupon code again");
                           }
-                          print("postgrestError.code ${postgrestError.code}");
                         }
                       });
                     } else {
@@ -397,7 +395,6 @@ class AddCoupon extends HookConsumerWidget {
                             if (postgrestError.code == "23505") {
                               EasyLoading.showInfo("Coupon code should be unique so enter coupon code again");
                             }
-                            print("postgrestError.code ${postgrestError.code}");
                           }
                         });
                       }

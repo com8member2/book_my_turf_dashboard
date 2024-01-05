@@ -67,11 +67,9 @@ class UserListScreen extends HookConsumerWidget {
 
         else
         {
-          print("in else ${users}");
           users = await Constants.supabase.from(SupaTables.user_profile).select().is_('deletaed_at', null).range(pageToken, pageToken + pageSize);
         }
 
-        print("users ${users}");
 
         return PaginationResult.items(elements: [...users], nextPageToken: (users).length < pageSize  ? null : pageToken + pageSize, size: (users as List).length);
       },

@@ -253,9 +253,6 @@ class VenueListScreen extends HookConsumerWidget {
           title: 'View Details',
           cellBuilder: (p0) => IconButton(
               onPressed: () {
-
-
-                print("VenueEntity.fromJson ${VenueEntity.fromJson( Map<String, dynamic>.from(p0),).toJson()}");
                 context.goNamed(AppRoute.venueDetailsScreen,pathParameters: {'id' : p0['id'].toString()});
               },
               icon: Icon(Icons.edit_note_rounded)),

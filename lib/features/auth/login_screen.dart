@@ -95,7 +95,6 @@ class LoginScreen extends HookConsumerWidget {
                                      },
                                    );
                                  }  catch (e) {
-                                   print(e.toString());
 
                                  }
                                }
